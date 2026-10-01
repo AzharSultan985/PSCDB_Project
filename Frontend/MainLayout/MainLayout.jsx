@@ -1,8 +1,8 @@
+import { Outlet } from "react-router-dom";
 import Footer from "./Footer";
 import Navbar from "./Navbar";
 
-
-export default function MainLayout({ children }) {
+export default function MainLayout() {
   return (
     <div className="flex min-h-screen flex-col bg-white">
       <a
@@ -15,10 +15,10 @@ export default function MainLayout({ children }) {
       <Navbar />
 
       <main id="main-content" className="flex-1">
-        {children}
+        <Outlet />
       </main>
 
-      <Footer/>
+      <Footer />
     </div>
   );
 }

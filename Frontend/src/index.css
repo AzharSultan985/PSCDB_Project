@@ -4,11 +4,67 @@ html,
 body,
 #root {
   width: 100%;
+  max-width: 100%;
   min-height: 100%;
+}
+
+html {
+  scroll-padding-top: 82px;
 }
 
 body {
   min-width: 320px;
   min-height: 100vh;
   margin: 0;
+  overflow-x: clip;
+}
+
+.pscdb-reveal {
+  opacity: 0;
+  transform: perspective(1100px) translate3d(0, 36px, -55px) rotateX(7deg)
+    scale(0.98);
+  transform-style: preserve-3d;
+  transition:
+    opacity 650ms cubic-bezier(0.2, 0.75, 0.25, 1),
+    transform 750ms cubic-bezier(0.2, 0.75, 0.25, 1);
+  will-change: opacity, transform;
+}
+
+.pscdb-reveal--left {
+  transform: perspective(1100px) translate3d(-24px, 10px, -45px) rotateY(7deg)
+    rotateX(3deg) scale(0.98);
+}
+
+.pscdb-reveal--right {
+  transform: perspective(1100px) translate3d(24px, 10px, -45px) rotateY(-7deg)
+    rotateX(3deg) scale(0.98);
+}
+
+.pscdb-reveal--front {
+  transform: perspective(1100px) translate3d(0, 0, -90px) rotateX(5deg)
+    scale(0.94);
+}
+
+.pscdb-reveal.is-visible {
+  opacity: 1;
+  transform: perspective(1100px) translate3d(0, 0, 0) rotateX(0) rotateY(0)
+    scale(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pscdb-reveal,
+  .pscdb-reveal--left,
+  .pscdb-reveal--right,
+  .pscdb-reveal--front {
+    opacity: 1;
+    transform: none;
+    transition: none;
+    will-change: auto;
+  }
+
+  .pathway-card,
+  .pathway-card * {
+    transition-duration: 0.01ms !important;
+    transform: none !important;
+  }
 }
