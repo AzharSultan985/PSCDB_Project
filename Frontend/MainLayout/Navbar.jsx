@@ -2,10 +2,10 @@ import { useEffect, useRef, useState } from "react";
 
 const links = [
   { label: "Home", href: "/" },
-  { label: "Programmes", href: "/programmes" },
-  { label: "Opportunities", href: "/opportunities" },
-  { label: "Our Work", href: "/our-work" },
   { label: "About Us", href: "/about" },
+  { label: "Our Work", href: "/our-work" },
+  { label: "Contact Us", href: "/contact" },
+  { label: "Student Portal", href: "/contact" },
 ];
 
 function MenuIcon({ open }) {
@@ -157,8 +157,7 @@ export default function Navbar() {
               href="/register"
               className="inline-flex min-h-11 items-center gap-2 rounded-full bg-[#123b32] px-5 text-[13px] font-bold text-white shadow-md shadow-[#123b32]/15 transition hover:-translate-y-0.5 hover:bg-[#167a62] hover:shadow-lg focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#d6b66b]"
             >
-              Get Started
-              <span aria-hidden="true" className="text-[#e8cf8e]">
+Register              <span aria-hidden="true" className="text-[#e8cf8e]">
                 ↗
               </span>
             </a>
@@ -284,7 +283,7 @@ export default function Navbar() {
                 onClick={closeMenu}
                 className="flex min-h-12 items-center justify-center gap-2 rounded-full bg-[#123b32] text-sm font-bold text-white transition hover:bg-[#167a62] focus-visible:outline-2 focus-visible:outline-[#d6b66b]"
               >
-                Get Started
+Register
                 <span aria-hidden="true" className="text-[#e8cf8e]">
                   ↗
                 </span>

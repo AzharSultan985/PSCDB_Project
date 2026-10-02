@@ -2,10 +2,9 @@ import ScrollReveal3D from "./ScrollReveal3D";
 
 const heroImages = [
   {
-    src: "/images/images.jfif",
+    src: "/images/",
     alt: "Learner developing practical skills",
-    label: "Learn practical skills",
-    href: "/programmes",
+    
     position: "left-[4%] top-[22%]",
     layer: "z-10",
     direction: "left",
@@ -16,10 +15,8 @@ const heroImages = [
       "hover:[transform:perspective(1200px)_translate3d(-20px,-8px,90px)_rotateY(4deg)_rotateX(3deg)_rotateZ(-2deg)] focus-visible:[transform:perspective(1200px)_translate3d(-20px,-8px,90px)_rotateY(4deg)_rotateX(3deg)_rotateZ(-2deg)]",
   },
   {
-    src: "/images/images 1.jfif",
+    src: "/images/leadership/groupphoto.jpeg",
     alt: "Mentor guiding a learner",
-    label: "Get expert guidance",
-    href: "/mentors",
     position: "left-[33%] top-[14%]",
     layer: "z-20",
     direction: "front",
@@ -30,10 +27,8 @@ const heroImages = [
       "hover:[transform:perspective(1200px)_translate3d(0,-18px,110px)_rotateY(0deg)_rotateX(5deg)_rotateZ(0deg)] focus-visible:[transform:perspective(1200px)_translate3d(0,-18px,110px)_rotateY(0deg)_rotateX(5deg)_rotateZ(0deg)]",
   },
   {
-    src: "/images/images 2.jfif",
+    src: "/images/",
     alt: "People learning together in a workshop",
-    label: "Move toward opportunity",
-    href: "/opportunities",
     position: "left-[62%] top-[22%]",
     layer: "z-30",
     direction: "right",

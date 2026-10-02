@@ -9,6 +9,9 @@ import MainLayout from "../MainLayout/MainLayout";
 import "./App.css";
 import ProgrammesSection from "../Modules/Programmes/ProgrammesSection";
 import ScrollReveal3D from "../Components/ScrollReveal3D";
+import OpportunitiesSection from "../Components/opportunities";
+import OurWorkSection from "../Components/ourWork";
+import ContactPage from "../Components/contact";
 
 function HomePage() {
   return (
@@ -28,9 +31,10 @@ function HomePage() {
     </ScrollReveal3D>
      <ScrollReveal3D as="section" direction="right" delay={100}>
 
-      <ProgrammesSection />
+      {/* <ProgrammesSection /> */}
+      <OurWorkSection />
     </ScrollReveal3D>
-      <CentresSection />
+      {/* <CentresSection /> */}
     </>
   );
 }
@@ -91,6 +95,9 @@ export default function App() {
             element={<ProgrammeDetailsPage />}
           />
           <Route path="centres" element={<CentresSection />} />
+          <Route path="opportunities" element={<OpportunitiesSection/>} />
+          <Route path="our-work" element={<OurWorkSection/>} />
+          <Route path="contact" element={<ContactPage/>} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>

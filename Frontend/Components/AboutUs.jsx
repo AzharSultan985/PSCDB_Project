@@ -3,27 +3,27 @@ import { useState } from "react";
 
 const leadership = [
   {
-    name: "Name to be added",
-    role: "Chairman of the Board",
-    image: "/images/leadership/chairman.jpg",
+    name: "Rana Kaif Ullah",
+    role: "Chief Executive Officer (CEO)",
+    image: "/images/leadership/Rana kaif Ullah.png",
     initials: "CB",
   },
   {
-    name: "Name to be added",
-    role: "Vice Chairman",
-    image: "/images/leadership/vice-chairman.jpg",
+    name: "Abdullah Shafiq",
+    role: "Director",
+    image: "/images/leadership/Abdullah Shafiq.png",
     initials: "VC",
   },
   {
-    name: "Name to be added",
-    role: "Director General",
-    image: "/images/leadership/director-general.jpg",
+    name: "Col. (Retd.) M.Zaka Ullah",
+    role: "Director ",
+    image: "/images/leadership/Muhammad Zaka Ullah.png",
     initials: "DG",
   },
   {
-    name: "Name to be added",
-    role: "Board Member",
-    image: "/images/leadership/board-member.jpg",
+    name: "Syed Ali Raza Shah",
+    role: "Director",
+    image: "/images/leadership/Syed Ali Raza Shah.png",
     initials: "BM",
   },
 ];
