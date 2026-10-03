@@ -8,11 +8,11 @@ const leadership = [
     image: "/images/leadership/Rana kaif Ullah.png",
     initials: "CB",
   },
-  {
-    name: "Abdullah Shafiq",
+   {
+    name: "Syed Ali Raza Shah",
     role: "Director",
-    image: "/images/leadership/Abdullah Shafiq.png",
-    initials: "VC",
+    image: "/images/leadership/Syed Ali Raza Shah.png",
+    initials: "BM",
   },
   {
     name: "Col. (Retd.) M.Zaka Ullah",
@@ -20,11 +20,12 @@ const leadership = [
     image: "/images/leadership/Muhammad Zaka Ullah.png",
     initials: "DG",
   },
+ 
   {
-    name: "Syed Ali Raza Shah",
+    name: "Abdullah Shafiq",
     role: "Director",
-    image: "/images/leadership/Syed Ali Raza Shah.png",
-    initials: "BM",
+    image: "/images/leadership/Abdullah Shafiq.png",
+    initials: "VC",
   },
 ];
 

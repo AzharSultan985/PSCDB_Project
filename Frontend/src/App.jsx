@@ -16,24 +16,17 @@ import ContactPage from "../Components/contact";
 function HomePage() {
   return (
     <>
-    <ScrollReveal3D as="section" direction="right" delay={100}>
-
+  
       <HeroSection />
-    </ScrollReveal3D>
-     <ScrollReveal3D as="section" direction="left" delay={100}>
-
+   
       <AboutUs />
 
-    </ScrollReveal3D>
-     <ScrollReveal3D as="section" direction="right" delay={100}>
 
       <PathwaysSection />
-    </ScrollReveal3D>
-     <ScrollReveal3D as="section" direction="right" delay={100}>
 
       {/* <ProgrammesSection /> */}
       <OurWorkSection />
-    </ScrollReveal3D>
+
       {/* <CentresSection /> */}
     </>
   );
