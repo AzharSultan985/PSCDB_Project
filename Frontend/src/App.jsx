@@ -12,6 +12,7 @@ import ScrollReveal3D from "../Components/ScrollReveal3D";
 import OpportunitiesSection from "../Components/opportunities";
 import OurWorkSection from "../Components/ourWork";
 import ContactPage from "../Components/contact";
+import RegisterAuth from "../Auth/RegisterAuth";
 
 function HomePage() {
   return (
@@ -91,6 +92,14 @@ export default function App() {
           <Route path="opportunities" element={<OpportunitiesSection/>} />
           <Route path="our-work" element={<OurWorkSection/>} />
           <Route path="contact" element={<ContactPage/>} />
+
+
+<Route path="register" element={<RegisterAuth />} />
+
+
+
+
+
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>

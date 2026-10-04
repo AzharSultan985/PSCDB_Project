@@ -228,6 +228,67 @@ export default function AboutUs() {
         </ScrollReveal3D>
       </div>
 
+
+
+
+
+
+<div className="mx-auto mt-20 grid max-w-7xl items-stretch gap-6 lg:grid-cols-2">
+  <ScrollReveal3D direction="left">
+    <article className="group relative h-full overflow-hidden rounded-[2rem] border border-[#C4ED70]/25 bg-gradient-to-br from-[#14503E] via-[#0D4034] to-[#0A342C] p-7 shadow-[0_24px_65px_-38px_rgba(0,0,0,0.8)] transition duration-500 hover:-translate-y-2 hover:border-[#C4ED70]/60 hover:shadow-[0_32px_75px_-38px_rgba(0,0,0,0.9)] hover:[transform:perspective(1100px)_rotateX(3deg)_rotateY(-2deg)_translateZ(10px)] sm:p-9">
+      <span className="inline-flex rounded-full border border-[#C4ED70]/25 bg-[#C4ED70]/10 px-3 py-1.5 text-xs font-bold uppercase tracking-[0.18em] text-[#C4ED70]">
+        Our vision
+      </span>
+
+      <h3 className="mt-6 text-2xl font-semibold text-[#FFFDF5] sm:text-3xl">
+        A future built on opportunity.
+      </h3>
+
+      <p className="mt-4 text-sm leading-7 text-[#D5E9DD] sm:text-base sm:leading-8">
+        To build a nationally and internationally recognized education,
+        skills, technology and digital-enterprise platform that expands access
+        to quality learning, professional skills, innovation,
+        entrepreneurship, employment and responsible community development.
+      </p>
+
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute -bottom-16 -right-12 h-44 w-44 rounded-full bg-[#A7E85A]/15 blur-3xl transition duration-500 group-hover:scale-125"
+      />
+    </article>
+  </ScrollReveal3D>
+
+  <ScrollReveal3D direction="right" delay={120}>
+    <article className="group relative h-full overflow-hidden rounded-[2rem] border border-white/10 bg-[#F6F3E8] p-7 text-[#123B2B] shadow-[0_24px_65px_-38px_rgba(0,0,0,0.45)] transition duration-500 hover:-translate-y-2 hover:border-[#D8B65A]/60 hover:shadow-[0_32px_75px_-38px_rgba(0,0,0,0.6)] hover:[transform:perspective(1100px)_rotateX(3deg)_rotateY(2deg)_translateZ(10px)] sm:p-9">
+      <span className="inline-flex rounded-full border border-[#167A62]/20 bg-[#167A62]/10 px-3 py-1.5 text-xs font-bold uppercase tracking-[0.18em] text-[#167A62]">
+        Our mission
+      </span>
+
+      <h3 className="mt-6 text-2xl font-semibold sm:text-3xl">
+        Learning with purpose.
+      </h3>
+
+      <p className="mt-4 text-sm leading-7 text-[#52665A] sm:text-base sm:leading-8">
+        To provide high-quality, market-oriented skills and education
+        services; establish and support lawfully approved educational
+        institutions and university collaborations; develop international
+        language and virtual-school programs; operate technology, software
+        and e-commerce platforms; and promote entrepreneurship, employment
+        and community development through responsible corporate governance.
+      </p>
+
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute -bottom-16 -right-12 h-44 w-44 rounded-full bg-[#D8B65A]/20 blur-3xl transition duration-500 group-hover:scale-125"
+      />
+    </article>
+  </ScrollReveal3D>
+</div>
+
+<p className="mx-auto mt-5 max-w-4xl text-center text-xs leading-6 text-[#BDCEC0]">
+  Regulated education activities and institutional collaborations are subject
+  to the approvals, recognition, affiliation or accreditation required by law.
+</p>
       <div className="mx-auto mt-24 max-w-7xl">
   <ScrollReveal3D as="div" direction="up">
     <div className="mx-auto max-w-2xl text-center">
