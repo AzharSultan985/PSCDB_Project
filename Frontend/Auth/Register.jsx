@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useAuth } from "../Context/AuthContext";
 
 const passwordRules = [
   { label: "9+ characters", test: (value) => value.length >= 9 },
@@ -23,6 +24,7 @@ export default function Register({ onRegister }) {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [notice, setNotice] = useState(null);
   const [loading, setLoading] = useState(false);
+const {HandleRegister  } = useAuth();
 
   const passwordIsValid = passwordRules.every((rule) =>
     rule.test(form.password),
@@ -47,7 +49,7 @@ export default function Register({ onRegister }) {
     setNotice(null);
   }
 
-  async function handleSubmit(event) {
+ const  handleSubmit=async (event)=> {
     event.preventDefault();
     setNotice(null);
 
@@ -67,38 +69,17 @@ export default function Register({ onRegister }) {
       return;
     }
 
-    try {
-      setLoading(true);
-
-      const result = await onRegister({
-        name: form.name.trim(),
-        email: form.email.trim(),
-        phoneNumber: form.phoneNumber.trim(),
-        password: form.password,
-      });
-
-      setNotice({
-        type: result.ok ? "success" : "error",
-        text: result.message,
-      });
-
-      if (result.ok) {
-        setForm({
-          name: "",
-          email: "",
-          phoneNumber: "",
-          password: "",
-          confirmPassword: "",
-        });
-      }
-    } catch {
-      setNotice({
-        type: "error",
-        text: "Registration failed. Please try again.",
-      });
-    } finally {
-      setLoading(false);
-    }
+    
+    await HandleRegister(form)
+    
+     setForm({
+       name: "",
+       email: "",
+       phoneNumber: "",
+       password: "",
+       confirmPassword: "",})
+     
+    
   }
 
   const inputClass =

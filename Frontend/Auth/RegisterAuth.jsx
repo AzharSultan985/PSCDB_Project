@@ -11,13 +11,10 @@ const {  } = useAuth();
   function handleRegister(details) {
     const email = details.email.trim().toLowerCase();
 
-    if (users.some((user) => user.email === email)) {
-      return {
-        ok: false,
-        message: "This email already has a demo account. Try logging in.",
-      };
-    }
 
+
+
+    
     setUsers((current) => [...current, { ...details, email }]);
 
     return {

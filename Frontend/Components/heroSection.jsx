@@ -85,9 +85,10 @@ export default function HeroSection() {
             delay={100}
             className="mt-5 text-balance text-4xl font-semibold leading-[1.08] tracking-[-0.045em] sm:text-5xl lg:text-[3.5rem]"
           >
-            Turn your potential into{" "}
-            <span className="text-[#e8cf8e]">opportunity.</span>
+            EMPOWERING PEOPLE ,{" "}
+            <span className="text-[#e8cf8e]">BUILDING COMMUNITIES</span>
           </ScrollReveal3D>
+          
 
           <ScrollReveal3D
             as="p"
@@ -102,6 +103,34 @@ export default function HeroSection() {
           <ScrollReveal3D
             direction="right"
             delay={260}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
             className="mt-8 flex flex-wrap items-center gap-3"
           >
             <a
