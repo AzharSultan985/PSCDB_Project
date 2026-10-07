@@ -1,68 +1,87 @@
 import {
   createContext,
+  useCallback,
   useContext,
   useMemo,
   useState,
 } from "react";
 
-const AuthContext = createContext(null);
+const AuthContext = createContext(undefined);
+const BACKEND_URL = "http://localhost:3002";
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
-  const [AuthLoading, setAuthLoading] = useState(false);
+  const [authLoading, setAuthLoading] = useState(false);
 
+  const handleRegister = useCallback(async (formData) => {
+    setAuthLoading(true);
+console.log(formData)
+    try {
+      // Confirm password sirf frontend validation ke liye hai.
+      // Isay backend par send nahi karna.
+      const { confirmPassword, ...registrationData } = formData;
 
-const HandleRegister =(data)=>{
-try {
-  setAuthLoading(true)
-console.log(data)
-  const response = fetch(`${BACKEND_URL}/api/v1/auth/register-student`,{
-    method:"post",
-    headers:"application.json",
-    body:data
-  })
-const result = response.json()
-if (result.success) {
-  console.log(result.message)
-  
-} else {
-  console.log(result.message)
-  
-}
+      const response = await fetch(
+        `${BACKEND_URL}/api/v1/auth/register-student`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify(registrationData),
+        },
+      );
 
-} catch (error) {
-  console.log(error)
-}finally{
-  setAuthLoading(false)
-}
+      const result = await response.json().catch(() => ({}));
 
+      if (!response.ok) {
+        return {
+          success: false,
+          message: result.message || "Registration failed. Please try again.",
+        };
+      }
 
-}
+      return {
+        success: true,
+        message: result.message || "Registration successful.",
+        data: result.data,
+      };
+    } catch (error) {
+      console.error("Registration request failed:", error);
 
+      return {
+        success: false,
+        message: "Could not connect to the server. Please try again.",
+      };
+    } finally {
+      setAuthLoading(false);
+    }
+  }, []);
 
-
+  const clearUser = useCallback(() => {
+    setUser(null);
+  }, []);
 
   const value = useMemo(
     () => ({
       user,
       isAuthenticated: Boolean(user),
+      authLoading,
       setUser,
-      clearUser: () => setUser(null),
+      clearUser,
+      handleRegister,
     }),
-    [user],
+    [user, authLoading, clearUser, handleRegister],
   );
 
-  return (
-    <AuthContext.Provider value={HandleRegister}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
 export function useAuth() {
   const context = useContext(AuthContext);
 
-  if (!context) {
+  if (context === undefined) {
     throw new Error("useAuth must be used inside an AuthProvider.");
   }
 

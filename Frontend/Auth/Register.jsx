@@ -24,7 +24,7 @@ export default function Register({ onRegister }) {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [notice, setNotice] = useState(null);
   const [loading, setLoading] = useState(false);
-const {HandleRegister  } = useAuth();
+const {handleRegister  } = useAuth();
 
   const passwordIsValid = passwordRules.every((rule) =>
     rule.test(form.password),
@@ -49,38 +49,54 @@ const {HandleRegister  } = useAuth();
     setNotice(null);
   }
 
- const  handleSubmit=async (event)=> {
-    event.preventDefault();
-    setNotice(null);
 
-    if (!passwordIsValid) {
-      setNotice({
-        type: "error",
-        text: "Complete all password requirements first.",
-      });
-      return;
-    }
 
-    if (!passwordsMatch) {
-      setNotice({
-        type: "error",
-        text: "Your passwords do not match.",
-      });
-      return;
-    }
 
-    
-    await HandleRegister(form)
-    
-     setForm({
-       name: "",
-       email: "",
-       phoneNumber: "",
-       password: "",
-       confirmPassword: "",})
-     
-    
+
+
+async function handleSubmit(event) {
+  event.preventDefault();
+  setNotice(null);
+
+  if (!passwordIsValid) {
+    setNotice({
+      type: "error",
+      text: "Complete all password requirements first.",
+    });
+    return;
   }
+
+  if (!passwordsMatch) {
+    setNotice({
+      type: "error",
+      text: "Your passwords do not match.",
+    });
+    return;
+  }
+
+  const result = await handleRegister(form);
+
+  setNotice({
+    type: result.success ? "success" : "error",
+    text: result.message,
+  });
+
+  // Form sirf successful registration ke baad clear hoga.
+  if (result.success) {
+    setForm({
+      name: "",
+      email: "",
+      phoneNumber: "",
+      password: "",
+      confirmPassword: "",
+    });
+  }
+}
+
+
+
+
+
 
   const inputClass =
     "mt-1.5 h-11 w-full rounded-xl border border-[#173A30]/15 bg-white px-3.5 text-sm text-[#173A30] outline-none transition placeholder:text-[#8A9890] focus:border-[#167A62] focus:ring-4 focus:ring-[#167A62]/10";
