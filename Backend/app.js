@@ -4,6 +4,7 @@ import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
 import UserAuthRoutes from './Routes/userAuthRoutes.js'
+import connectDB from "./config/db.js";
 const app = express();
 
 app.use(helmet());
@@ -15,7 +16,7 @@ app.use(express.urlencoded({ extended: true, limit: "10kb" }));
 app.use(morgan("dev"));
 
 
-
+connectDB()
 
 app.get("/",(req,res)=>{
 res.send("server is running")

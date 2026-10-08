@@ -4,7 +4,7 @@ const router =  Router()
 
 
 
-router.post("/register-student",UserRegisterController)
+// router.post("/register-student",UserRegisterController)
 
 
 
