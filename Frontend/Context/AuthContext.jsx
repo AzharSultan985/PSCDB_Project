@@ -22,7 +22,7 @@ console.log(formData)
       const { confirmPassword, ...registrationData } = formData;
 
       const response = await fetch(
-        `${BACKEND_URL}/api/v1/auth/register-studentc`,
+        `${BACKEND_URL}/api/v1/auth/register-student`,
         {
           method: "POST",
           headers: {
@@ -35,12 +35,13 @@ console.log(formData)
 
       const result = await response.json().catch(() => ({}));
 
-      if (!response.ok) {
+      if (!response.success) {
         return {
           success: false,
           message: result.message || "Registration failed. Please try again.",
         };
       }
+console.log(result);
 
       return {
         success: true,

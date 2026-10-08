@@ -1,5 +1,6 @@
 import argon2 from "argon2";
 import User from "../DBModels/StudentProfile.js";
+import { issueEmailVerificationOtp } from "../services/otp.service.js";
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const phonePattern = /^\+?[0-9]{7,15}$/;
@@ -90,9 +91,12 @@ export async function registerStudent(req, res) {
       isEmailVerified: false,
     });
 
-    // TODO: Yahan email verification code bhejne wali service connect karni hai.
-    // OTP controller/service abhi implement nahi ki ja rahi.
-    // await sendEmailVerificationCode({ userId: user._id, email: user.email });
+
+
+await issueEmailVerificationOtp(user);
+
+
+    
 
     return res.status(201).json({
       success: true,

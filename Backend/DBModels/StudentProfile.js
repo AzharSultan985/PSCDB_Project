@@ -36,6 +36,29 @@ isEmailVerified: {
   type: Boolean,
   default: false,
 },
+
+emailVerification: {
+  otpHash: {
+    type: String,
+    default: null,
+    select: false,
+  },
+  expiresAt: {
+    type: Date,
+    default: null,
+    select: false,
+  },
+  sentAt: {
+    type: Date,
+    default: null,
+    select: false,
+  },
+  attempts: {
+    type: Number,
+    default: 0,
+    select: false,
+  },
+},
     // Student profile details
     profile: {
       bio: {
