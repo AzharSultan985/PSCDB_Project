@@ -73,9 +73,9 @@ export default function HeroSection() {
           >
             <span
               aria-hidden="true"
-              className="h-1.5 w-1.5 rounded-full bg-[#d6b66b]"
+              className="h-2 w-2 text-3xl rounded-full bg-[#d6b66b]"
             />
-            Pakistan Skills Development Community Board
+            Professtional Skills and  Community Development  Beirat
           </ScrollReveal3D>
 
           <ScrollReveal3D
@@ -96,8 +96,7 @@ export default function HeroSection() {
             delay={180}
             className="mt-5 max-w-xl text-pretty text-sm leading-7 text-white/75 sm:text-base sm:leading-8"
           >
-            Explore practical skills, trusted guidance and pathways to work.
-            Find your next step with a community that helps you move forward.
+           Through quality education, innovative skills development, emerging technologies, entrepreneurship, and building communities, we equip people with the knowledge, confidence, and capabilities to succeed.
           </ScrollReveal3D>
 
           <ScrollReveal3D
@@ -173,36 +172,60 @@ export default function HeroSection() {
             aria-hidden="true"
             className="pointer-events-none absolute left-1/2 top-1/2 h-[78%] w-[78%] -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/10 transition-transform duration-700 group-hover:rotate-6 motion-reduce:transition-none"
           />
+{/* Single animated campus image */}
+<ScrollReveal3D
+  direction="right"
+  delay={220}
+  className="relative mx-auto w-full max-w-[660px]"
+>
+  <div className="pscdb-hero-float relative">
+    {/* Soft glow behind the image */}
+    <div
+      aria-hidden="true"
+      className="pointer-events-none absolute -inset-5 rounded-[2rem] bg-[#d6b66b]/15 blur-2xl sm:-inset-7"
+    />
 
-          {heroImages.map((image) => (
-            <ScrollReveal3D
-              key={image.src}
-              direction={image.direction}
-              delay={image.delay}
-              className={`absolute ${image.position} ${image.layer} h-[52%] w-[34%] transition-[z-index] duration-300 hover:z-50 focus-within:z-50`}
-            >
-              <a
-                href={image.href}
-                aria-label={image.label}
-                className={`group/card relative block h-full w-full cursor-pointer overflow-hidden rounded-2xl border border-white/30 bg-[#1c4c40] shadow-[0_24px_60px_-22px_rgba(0,0,0,0.75)] [transform-style:preserve-3d] transition-[transform,box-shadow] duration-700 [transition-timing-function:cubic-bezier(0.2,0.8,0.2,1)] hover:shadow-[0_38px_80px_-22px_rgba(0,0,0,0.8)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#e8cf8e] motion-reduce:transition-none ${image.start} ${image.hover}`}
-              >
-                <img
-                  src={image.src}
-                  alt=""
-                  className="h-full w-full cursor-pointer object-cover transition-transform duration-700 group-hover/card:scale-105 motion-reduce:transition-none"
-                />
+    <figure className="pscdb-hero-image-frame group relative aspect-[1.45/1] overflow-hidden rounded-[1.5rem] border border-white/30 bg-[#123b32] shadow-[0_30px_80px_-24px_rgba(0,0,0,0.65)] sm:rounded-[2rem]">
+      <img
+        src="/images/PSCDB Campus Welcome.png"
+        alt="Students arriving at the PSCDB campus for a welcome event"
+        className="h-full w-full object-cover object-center"
+      />
 
-                <span
-                  aria-hidden="true"
-                  className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#071f19]/90 via-[#071f19]/10 to-transparent"
-                />
+      {/* Subtle contrast for the caption */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#071f19]/70 via-transparent to-[#071f19]/10"
+      />
 
-                <span className="pointer-events-none absolute inset-x-0 bottom-0 p-2 text-[10px] font-semibold leading-tight text-white drop-shadow sm:p-3 sm:text-xs">
-                  {image.label}
-                </span>
-              </a>
-            </ScrollReveal3D>
-          ))}
+      <figcaption className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-4 sm:p-6">
+        <div>
+          <span className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-[#123b32]/65 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#e8cf8e] backdrop-blur-md sm:text-xs">
+            <span className="h-1.5 w-1.5 rounded-full bg-[#d6b66b]" />
+            Welcome to PSCDB
+          </span>
+
+          <p className="mt-2 text-sm font-semibold text-white drop-shadow sm:text-base">
+            Learn · Connect · Grow
+          </p>
+        </div>
+
+        <span
+          aria-hidden="true"
+          className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-white/30 bg-white/15 text-lg text-white backdrop-blur-md"
+        >
+          ↗
+        </span>
+      </figcaption>
+    </figure>
+
+    {/* Decorative frame */}
+    <div
+      aria-hidden="true"
+      className="pointer-events-none absolute -bottom-3 -right-3 -z-10 h-full w-full rounded-[1.5rem] border border-[#d6b66b]/50 sm:-bottom-4 sm:-right-4 sm:rounded-[2rem]"
+    />
+  </div>
+</ScrollReveal3D>
 
           <div className="pointer-events-none absolute bottom-1 left-1/2 z-40 -translate-x-1/2 rounded-full border border-white/15 bg-[#123b32]/75 px-3 py-2 text-[10px] font-medium tracking-wide text-white/80 backdrop-blur-md sm:text-xs">
             LEARN · CONNECT · GROW

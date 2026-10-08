@@ -72,7 +72,7 @@ const values = [
   {
     number: "01",
     title: "Practical learning",
-    description: "Build useful skills through learning designed for real opportunities.",
+    description: "Build practical handson skills through real time  learning by building real world projects.",
   },
   {
     number: "02",
@@ -113,24 +113,23 @@ export default function AboutUs() {
           </ScrollReveal3D>
 
           <ScrollReveal3D as="div" direction="left" delay={100}>
-            <h2 className="mt-6 max-w-2xl text-4xl font-semibold leading-[1.12] tracking-tight text-[#FFFDF5] sm:text-5xl lg:text-6xl">
-              Skills that open doors.
+            <h2 className="mt-6 max-w-2xl text-3xl font-semibold leading-[1.12] tracking-tight text-[#FFFDF5] sm:text-5xl lg:text-6xl">
+              Skills that Open Doors and 
               <span className="mt-2 block text-[#C4ED70]">
-                Communities that move forward.
+              Leads  Communities to Develop
               </span>
             </h2>
           </ScrollReveal3D>
 
           <ScrollReveal3D as="div" direction="left" delay={180}>
             <p className="mt-6 max-w-xl text-base leading-8 text-[#E1EBDF] sm:text-lg">
-              The Pakistan Skills and Community Development Board works to
-              connect people with practical learning, guidance and pathways
+              At PSCDB , we train  people with practical learning, guidance and pathways
               toward a stronger future.
             </p>
             <p className="mt-4 max-w-xl text-sm leading-7 text-[#BDCEC0] sm:text-base">
               We bring learners, educators, donors and community partners
               together to make skill development more accessible and create
-              opportunities that can make a meaningful difference.
+              opportunities to succeed in life and career.
             </p>
           </ScrollReveal3D>
 
@@ -139,7 +138,7 @@ export default function AboutUs() {
               href="#programmes"
               className="group mt-8 inline-flex items-center gap-3 rounded-full bg-[#C4ED70] px-6 py-3.5 text-sm font-bold text-[#123B2B] shadow-[0_10px_35px_rgba(196,237,112,0.2)] transition duration-300 hover:-translate-y-1 hover:bg-[#D7F69A] hover:shadow-[0_16px_40px_rgba(196,237,112,0.3)] focus:outline-none focus-visible:ring-4 focus-visible:ring-[#C4ED70]/40"
             >
-              Explore our programmes
+              Explore our Programmes
               <span className="transition-transform duration-300 group-hover:translate-x-1">
                 →
               </span>
@@ -170,7 +169,7 @@ export default function AboutUs() {
                     What guides us
                   </p>
                   <h3 className="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">
-                    Progress with purpose
+                    Progress with Purpose
                   </h3>
                 </div>
 
@@ -292,19 +291,18 @@ export default function AboutUs() {
       <div className="mx-auto mt-24 max-w-7xl">
   <ScrollReveal3D as="div" direction="up">
     <div className="mx-auto max-w-2xl text-center">
-      <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#C4ED70] sm:text-sm">
+      {/* <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#C4ED70] sm:text-sm">
         Our leadership
-      </p>
+      </p> */}
 
       <h2 className="mt-4 text-3xl font-semibold tracking-tight text-[#FFFDF5] sm:text-4xl lg:text-5xl">
-        Guided by experience.
-        <span className="block text-[#C4ED70]">Driven by community.</span>
+Board of          <span className=" text-[#C4ED70]">Directors</span>
       </h2>
 
-      <p className="mx-auto mt-4 max-w-xl text-sm leading-7 text-[#D5E9DD] sm:text-base">
+      {/* <p className="mx-auto mt-4 max-w-xl text-sm leading-7 text-[#D5E9DD] sm:text-base">
         Meet the people guiding PSCDB’s mission, governance and community
         development work.
-      </p>
+      </p> */}
     </div>
   </ScrollReveal3D>
 

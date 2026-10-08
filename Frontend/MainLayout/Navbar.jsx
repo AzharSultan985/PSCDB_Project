@@ -3,7 +3,8 @@ import { useEffect, useRef, useState } from "react";
 const links = [
   { label: "Home", href: "/" },
   { label: "About Us", href: "/about" },
-  { label: "Our Work", href: "/our-work" },
+  { label: "Governce & Managment", href: "/directors" },
+  { label: "Projects", href: "/our-work" },
   { label: "Contact Us", href: "/contact" },
   { label: "Student Portal", href: "/contact" },
 ];
@@ -116,14 +117,10 @@ export default function Navbar() {
             </span>
 
             <span className="hidden leading-tight sm:block">
-              <span className="block text-sm font-extrabold tracking-[0.16em] text-[#123b32]">
+              <span className="block text-3xl font-extrabold tracking-[0.16em] text-[#123b32]">
                 PSCDB
               </span>
-              <span className="mt-1 block text-[10px] leading-4 text-[#53615a]">
-                Pakistan Skills Development
-                <br />
-                Community Board
-              </span>
+           
             </span>
           </a>
 
@@ -147,7 +144,7 @@ export default function Navbar() {
           {/* Desktop actions */}
           <div className="hidden shrink-0 items-center gap-5 lg:flex">
             <a
-              href="/sign-in"
+              href="/register"
               className="rounded-lg px-2 py-2 text-[13px] font-bold text-[#123b32] transition-colors hover:text-[#167a62] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#167a62]"
             >
               Sign In

@@ -126,12 +126,12 @@ const {  } = useAuth();
 
           <div className="relative">
             <div className="flex items-center gap-3">
-              <span className="grid h-11 w-11 place-items-center rounded-xl border border-white/20 bg-white/10 text-sm font-black tracking-wide text-[#E8CF8E] shadow-lg">
+              {/* <span className="grid h-11 w-11 place-items-center rounded-xl border border-white/20 bg-white/10 text-sm font-black tracking-wide text-[#E8CF8E] shadow-lg">
                 PSC
-              </span>
-              <span className="text-xs font-bold uppercase tracking-[0.16em] text-white/85">
-                PSCDB Community
-              </span>
+              </span> */}
+              {/* <span className="text-xs font-bold uppercase tracking-[0.16em] text-white/85">
+                PSCDB 
+              </span> */}
             </div>
 
             <div className="mt-7 max-w-md sm:mt-9 lg:mt-16">
@@ -139,11 +139,11 @@ const {  } = useAuth();
                 Learn · Connect · Grow
               </p>
               <h1 className="mt-3 text-2xl font-semibold leading-tight tracking-tight sm:text-3xl lg:text-4xl">
-                Your next chapter starts here.
+                Your Career Starts Here.
               </h1>
               <p className="mt-3 max-w-sm text-xs leading-6 text-[#E1EBDF] sm:text-sm">
                 Sign in or create an account to continue your journey with the
-                PSCDB community.
+                PSCDB .
               </p>
             </div>
           </div>

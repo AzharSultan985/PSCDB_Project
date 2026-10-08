@@ -172,7 +172,7 @@ export default function OurWorkSection() {
           <div className="mx-auto max-w-3xl text-center">
             <span className="inline-flex items-center gap-2 rounded-full border border-[#B8E85B]/30 bg-[#B8E85B]/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-[#D2F28D] sm:text-sm">
               <span className="h-2 w-2 rounded-full bg-[#B8E85B]" />
-              Our work
+              Programs
             </span>
 
             <h2

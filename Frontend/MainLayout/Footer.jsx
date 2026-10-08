@@ -99,7 +99,7 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="flex flex-col gap-0 border-t border-white/15 pt-6 text-center text-xs text-white/55 sm:flex-row sm:items-center sm:justify-between sm:text-start">
   <p>
-    © {new Date().getFullYear()} Pakistan Skills Development Community Board
+    © {new Date().getFullYear()} PSCDB
   </p>
 
   <p>

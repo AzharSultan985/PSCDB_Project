@@ -120,15 +120,15 @@ export default function ProgrammesSection() {
           <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-2xl">
               <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#B9EF73] sm:text-sm">
-                PSCDB learning catalogue
+                PSCDB learning Divisions
               </p>
 
               <h2
                 id="programmes-heading"
                 className="mt-4 text-balance text-4xl font-semibold tracking-[-0.04em] text-[#FFFDF5] sm:text-5xl"
               >
-                Find a programme
-                <span className="text-[#B9EF73]"> for your next step.</span>
+                Find a Program
+                <span className="text-[#B9EF73]"> for your Career.</span>
               </h2>
 
               <p className="mt-5 max-w-xl text-sm leading-7 text-[#D5E9DD] sm:text-base">

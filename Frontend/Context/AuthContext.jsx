@@ -22,7 +22,7 @@ console.log(formData)
       const { confirmPassword, ...registrationData } = formData;
 
       const response = await fetch(
-        `${BACKEND_URL}/api/v1/auth/register-student`,
+        `${BACKEND_URL}/api/v1/auth/register-studentc`,
         {
           method: "POST",
           headers: {
