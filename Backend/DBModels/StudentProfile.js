@@ -32,7 +32,10 @@ const userSchema = new mongoose.Schema(
     },
 
  
-
+isEmailVerified: {
+  type: Boolean,
+  default: false,
+},
     // Student profile details
     profile: {
       bio: {
