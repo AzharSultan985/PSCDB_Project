@@ -1,7 +1,7 @@
 import { createHmac, randomInt } from "node:crypto";
-import { sendEmail } from "./mail.services";
+import { sendEmail } from "./mail.services.js";
 
-const OTP_TTL_MS = 10 * 60 * 1000;
+const OTP_TTL_MS = 2 * 60 * 1000;
 const RESEND_COOLDOWN_MS = 60 * 1000;
 
 function createOtpHash(userId, otp) {
@@ -59,7 +59,7 @@ export async function issueEmailVerificationOtp(user) {
           <h2>Verify your PSCDB email</h2>
           <p>Your verification code is:</p>
           <p style="font-size:28px;font-weight:bold;letter-spacing:6px">${otp}</p>
-          <p>This code expires in 10 minutes. If you did not create a PSCDB account, ignore this email.</p>
+          <p>This code expires in 2 minutes. If you did not create a PSCDB account, ignore this email.</p>
         </div>
       `,
     });

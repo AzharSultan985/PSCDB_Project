@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useAuth } from "../Context/AuthContext";
+import { useAlert } from "../Context/Alert";
 
 const passwordRules = [
   { label: "9+ characters", test: (value) => value.length >= 9 },
@@ -25,6 +26,7 @@ export default function Register({ onRegister }) {
   const [notice, setNotice] = useState(null);
   const [loading, setLoading] = useState(false);
 const {handleRegister  } = useAuth();
+const { showAlert } = useAlert();
 
   const passwordIsValid = passwordRules.every((rule) =>
     rule.test(form.password),
@@ -76,10 +78,8 @@ async function handleSubmit(event) {
 
   const result = await handleRegister(form);
 
-  setNotice({
-    type: result.success ? "success" : "error",
-    text: result.message,
-  });
+ 
+
 
   // Form sirf successful registration ke baad clear hoga.
   if (result.success) {

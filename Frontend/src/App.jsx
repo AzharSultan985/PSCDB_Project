@@ -14,6 +14,7 @@ import OurWorkSection from "../Components/ourWork";
 import ContactPage from "../Components/contact";
 import RegisterAuth from "../Auth/RegisterAuth";
 import BoardOfDirectors from "../Components/BoardOfDirectors";
+import OTPVerification from "../Auth/otpVerification";
 
 function HomePage() {
   return (
@@ -97,6 +98,7 @@ export default function App() {
 
 <Route path="register" element={<RegisterAuth />} />
 <Route path="directors" element={<BoardOfDirectors />} />
+<Route path="otp-verification" element={<OTPVerification />} />
 
 
 

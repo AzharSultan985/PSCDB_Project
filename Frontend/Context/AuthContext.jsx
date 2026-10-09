@@ -5,6 +5,8 @@ import {
   useMemo,
   useState,
 } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAlert } from "./Alert";
 
 const AuthContext = createContext(undefined);
 const BACKEND_URL = "http://localhost:3002";
@@ -12,6 +14,17 @@ const BACKEND_URL = "http://localhost:3002";
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [authLoading, setAuthLoading] = useState(false);
+
+const navigate= useNavigate()
+
+
+const { showAlert } = useAlert();
+
+
+
+
+
+
 
   const handleRegister = useCallback(async (formData) => {
     setAuthLoading(true);
@@ -36,12 +49,32 @@ console.log(formData)
       const result = await response.json().catch(() => ({}));
 
       if (!response.success) {
+
+showAlert({
+  type: "warning",
+    message:result.message,
+});
+
         return {
           success: false,
           message: result.message || "Registration failed. Please try again.",
         };
       }
 console.log(result);
+
+
+showAlert({
+  type: "success",
+    message:result.message,
+});
+     const registeredUser = result.data?.user ?? result.data;
+      const userId = registeredUser?._id 
+      
+     navigate(`otp-verification`,{
+      state:{email:registeredUser.email}
+     })
+
+
 
       return {
         success: true,

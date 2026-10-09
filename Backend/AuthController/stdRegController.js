@@ -105,11 +105,8 @@ await issueEmailVerificationOtp(user);
       data: {
         user: {
           id: user._id,
-          fullName: user.fullName,
           email: user.email,
-          phoneNumber: user.phoneNumber,
-          role: user.role,
-          isEmailVerified: user.isEmailVerified,
+        
         },
       },
     });
