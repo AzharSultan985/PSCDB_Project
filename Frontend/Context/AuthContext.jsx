@@ -92,47 +92,91 @@ console.log(result);
 //send otp to backend
 
 
-const HandleVerificationEmail_OTP=async (data)=>{
+const HandleVerificationEmail_OTP = useCallback(async (data) => {
+  setAuthLoading(true);
+
   try {
-    setAuthLoading(true)
-    const res = await fetch(`${BACKEND_URL}/api/v1/auth/email-verification`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-          body: JSON.stringify(data),
-        },)
+    const res = await fetch(
+      `${BACKEND_URL}/api/v1/auth/email-verification`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify(data),
+      },
+    );
+
+    const result = await res.json().catch(() => ({}));
+
+    if (!res.ok) {
+      return {
+        success: false,
+        message: result.message || `Verification failed (${res.status}).`,
+      };
+    }
+
+    return {
+      success: true,
+      message: result.message || "Email verification was successful.",
+      data: result.data,
+    };
+  } catch (error) {
+    console.error("Email verification request failed:", error);
+
+    return {
+      success: false,
+      message: "Could not connect to the server. Please try again.",
+    };
+  } finally {
+    setAuthLoading(false);
+  }
+}, []);
 
 
-const result= res.json()
+
+
+
+
+const Handle_Resend_OTP = async (email)=>{
+try {
+  setAuthLoading(true)
+
+  const res= await fetch(`${BACKEND_URL}/api/v1/auth/resend-email-otp`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({email}),
+      },)
+
+    const result = await res.json().catch(() => ({}));
+
 if (!res.ok) {
-  return ({
-    success:false,
-    messgae:result.message || "Something went wrong!"
+  return({
+success:false,
+message:result.message
+
   })
 }
 
-return({
+  return({
 success:true,
-message:result.message||"Email verification is successfully!"
-})
+message:result.message
+
+  })
 
 
-  } catch (error) {
-    console.log(error)
-  }finally{
-    setAuthLoading(false)
-  }
+
+} catch (error) {
+  console.log(error)
+}finally{
+  setAuthLoading(false)
 }
 
-
-
-
-
-
-
-
+}
 
   const value = useMemo(
     () => ({
@@ -141,9 +185,9 @@ message:result.message||"Email verification is successfully!"
       authLoading,
       setUser,
       clearUser,
-      handleRegister,HandleVerificationEmail_OTP
+      handleRegister,HandleVerificationEmail_OTP,Handle_Resend_OTP
     }),
-    [user, authLoading, clearUser, handleRegister],
+    [user, authLoading, clearUser, handleRegister,HandleVerificationEmail_OTP],Handle_Resend_OTP,
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

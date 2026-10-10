@@ -22,7 +22,7 @@ export default function OTPVerification() {
   const [notice, setNotice] = useState(null);
   const inputRefs = useRef([]);
 const { showAlert } = useAlert();
-const {HandleVerificationEmail_OTP  } = useAuth();
+const {HandleVerificationEmail_OTP ,Handle_Resend_OTP } = useAuth();
 
   const location = useLocation();
   const emailFromNavigation = location.state?.email ?? "";
@@ -143,10 +143,17 @@ showAlert({ type: "error", message: "Please enter the complete 6-digit verificat
 
   setVerificationData(payload);
   console.log("OTP verification data:", payload);
+const result = await HandleVerificationEmail_OTP(payload)
+if (result.success) {
+  showAlert({
 
-  // Baad mein yahan context function call hoga:
-  // const result = await verifyEmail(payload);
+    type:"success",
+    message:result.messgae  })
+}
+showAlert({ type: "error", message: result.message });
 
+
+  
 }
 
 
@@ -157,18 +164,9 @@ showAlert({ type: "error", message: "Please enter the complete 6-digit verificat
 
     if (resendSeconds > 0 || isResending) return;
 
-    if (!onResend) {
-      setNotice({
-        type: "info",
-        text: "The resend button is ready. Backend email delivery will be connected later.",
-      });
-      return;
-    }
-
     setIsResending(true);
-
     try {
-      const result = await onResend(email);
+      const result = await Handle_Resend_OTP(verificationData.email);
 
       if (result?.success === false) {
         throw new Error(result.message || "A new code could not be sent.");
@@ -176,15 +174,15 @@ showAlert({ type: "error", message: "Please enter the complete 6-digit verificat
 
       setOtp(Array(OTP_LENGTH).fill(""));
       setResendSeconds(RESEND_DELAY);
-      setNotice({
+      showAlert({
         type: "success",
-        text: result?.message || "A new verification code has been sent.",
+        message: result?.message || "A new verification code has been sent.",
       });
       inputRefs.current[0]?.focus();
     } catch (error) {
-      setNotice({
+      showAlert({
         type: "error",
-        text: error.message || "Could not resend the code. Please try again.",
+        message: error.message || "Could not resend the code. Please try again.",
       });
     } finally {
       setIsResending(false);
@@ -371,7 +369,7 @@ showAlert({ type: "error", message: "Please enter the complete 6-digit verificat
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="mt-7 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#167A62] to-[#0B4F3C] px-5 text-sm font-bold text-white shadow-[0_5px_0_#073B31,0_12px_24px_-12px_rgba(22,122,98,.7)] transition duration-200 hover:-translate-y-0.5 hover:shadow-[0_7px_0_#073B31,0_16px_28px_-12px_rgba(22,122,98,.75)] active:translate-y-1 active:shadow-[0_2px_0_#073B31] focus:outline-none focus-visible:ring-4 focus-visible:ring-[#167A62]/20 disabled:cursor-wait disabled:opacity-60 motion-reduce:transition-none"
+                className="mt-7 inline-flex min-h-12 w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#167A62] to-[#0B4F3C] px-5 text-sm font-bold text-white shadow-[0_5px_0_#073B31,0_12px_24px_-12px_rgba(22,122,98,.7)] transition duration-200 hover:-translate-y-0.5 hover:shadow-[0_7px_0_#073B31,0_16px_28px_-12px_rgba(22,122,98,.75)] active:translate-y-1 active:shadow-[0_2px_0_#073B31] focus:outline-none focus-visible:ring-4 focus-visible:ring-[#167A62]/20 disabled:cursor-wait disabled:opacity-60 motion-reduce:transition-none"
               >
                 {isSubmitting ? "Verifying..." : "Verify email"}
                 {!isSubmitting && <span aria-hidden="true">→</span>}
@@ -387,7 +385,7 @@ showAlert({ type: "error", message: "Please enter the complete 6-digit verificat
                 type="button"
                 onClick={handleResend}
                 disabled={resendSeconds > 0 || isResending}
-                className="mt-2 min-h-11 rounded-lg px-3 text-sm font-bold text-[#167A62] transition hover:bg-[#167A62]/5 hover:text-[#0B4F3C] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167A62] disabled:cursor-not-allowed disabled:text-[#89968C] motion-reduce:transition-none"
+                className="mt-2 min-h-11 cursor-pointer rounded-lg px-3 text-sm font-bold text-[#167A62] transition hover:bg-[#167A62]/5 hover:text-[#0B4F3C] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#167A62] disabled:cursor-not-allowed disabled:text-[#89968C] motion-reduce:transition-none"
               >
                 {isResending
                   ? "Sending new code..."
@@ -397,9 +395,7 @@ showAlert({ type: "error", message: "Please enter the complete 6-digit verificat
               </button>
             </div>
 
-            <p className="mt-8 text-center text-xs leading-5 text-[#8A9890]">
-              PSCDB will never ask you to share your verification code.
-            </p>
+          
           </div>
         </div>
       </section>
