@@ -6,10 +6,10 @@ import { AuthProvider } from '../Context/AuthContext.jsx'
 import { AlertProvider } from '../Context/Alert.jsx'
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <AuthProvider>
       <AlertProvider>
+    <AuthProvider>
         <App />
-      </AlertProvider>
     </AuthProvider>
+      </AlertProvider>
   </StrictMode>,
 )

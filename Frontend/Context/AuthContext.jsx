@@ -5,8 +5,6 @@ import {
   useMemo,
   useState,
 } from "react";
-import { useNavigate } from "react-router-dom";
-import { useAlert } from "./Alert";
 
 const AuthContext = createContext(undefined);
 const BACKEND_URL = "http://localhost:3002";
@@ -15,10 +13,8 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [authLoading, setAuthLoading] = useState(false);
 
-const navigate= useNavigate()
 
 
-const { showAlert } = useAlert();
 
 
 
@@ -48,39 +44,27 @@ console.log(formData)
 
       const result = await response.json().catch(() => ({}));
 
-      if (!response.success) {
+      if (!response.ok) {
 
-showAlert({
-  type: "warning",
-    message:result.message,
-});
 
         return {
           success: false,
           message: result.message || "Registration failed. Please try again.",
         };
-      }
+      }else{
+
 console.log(result);
-
-
-showAlert({
-  type: "success",
-    message:result.message,
-});
-     const registeredUser = result.data?.user ?? result.data;
-      const userId = registeredUser?._id 
-      
-     navigate(`otp-verification`,{
-      state:{email:registeredUser.email}
-     })
-
-
-
+      // const userId = registeredUser?._id      
+   
       return {
         success: true,
         message: result.message || "Registration successful.",
-        data: result.data,
+          data: result.data,
+
       };
+
+      }
+
     } catch (error) {
       console.error("Registration request failed:", error);
 
@@ -97,6 +81,59 @@ showAlert({
     setUser(null);
   }, []);
 
+
+
+
+
+
+
+
+
+//send otp to backend
+
+
+const HandleVerificationEmail_OTP=async (data)=>{
+  try {
+    setAuthLoading(true)
+    const res = await fetch(`${BACKEND_URL}/api/v1/auth/email-verification`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify(data),
+        },)
+
+
+const result= res.json()
+if (!res.ok) {
+  return ({
+    success:false,
+    messgae:result.message || "Something went wrong!"
+  })
+}
+
+return({
+success:true,
+message:result.message||"Email verification is successfully!"
+})
+
+
+  } catch (error) {
+    console.log(error)
+  }finally{
+    setAuthLoading(false)
+  }
+}
+
+
+
+
+
+
+
+
+
   const value = useMemo(
     () => ({
       user,
@@ -104,7 +141,7 @@ showAlert({
       authLoading,
       setUser,
       clearUser,
-      handleRegister,
+      handleRegister,HandleVerificationEmail_OTP
     }),
     [user, authLoading, clearUser, handleRegister],
   );

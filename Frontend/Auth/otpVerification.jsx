@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-
+import { useLocation } from "react-router-dom";
+import { useAlert } from "../Context/Alert";
+import { useAuth } from "../Context/AuthContext";
 const OTP_LENGTH = 6;
 const RESEND_DELAY = 60;
 
@@ -9,21 +11,39 @@ function maskEmail(email) {
   const [name, domain] = email.split("@");
   const visibleCharacter = name.slice(0, 1);
   const hiddenCharacters = "*".repeat(Math.max(name.length - 1, 3));
-
   return `${visibleCharacter}${hiddenCharacters}@${domain}`;
 }
 
-export default function OTPVerification({
-  email = "",
-  onVerify,
-  onResend,
-}) {
+export default function OTPVerification() {
   const [otp, setOtp] = useState(Array(OTP_LENGTH).fill(""));
   const [resendSeconds, setResendSeconds] = useState(RESEND_DELAY);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isResending, setIsResending] = useState(false);
   const [notice, setNotice] = useState(null);
   const inputRefs = useRef([]);
+const { showAlert } = useAlert();
+const {HandleVerificationEmail_OTP  } = useAuth();
+
+  const location = useLocation();
+  const emailFromNavigation = location.state?.email ?? "";
+
+  const [verificationData, setVerificationData] = useState({
+    email: emailFromNavigation,
+    otp: "",
+  });
+
+
+
+
+  useEffect(() => {
+    setVerificationData((current) => ({
+      ...current,
+      email: emailFromNavigation,
+    }));
+  }, [emailFromNavigation]);
+
+
+
 
   useEffect(() => {
     if (resendSeconds <= 0) return undefined;
@@ -97,49 +117,40 @@ export default function OTPVerification({
   }
 
   async function handleSubmit(event) {
-    event.preventDefault();
-    setNotice(null);
+  event.preventDefault();
+  setNotice(null);
 
-    const code = otp.join("");
+  const code = otp.join("");
 
-    if (code.length !== OTP_LENGTH) {
-      setNotice({
-        type: "error",
-        text: "Please enter the complete 6-digit verification code.",
-      });
-      return;
-    }
+  if (!verificationData.email) {
 
-    if (!onVerify) {
-      setNotice({
-        type: "info",
-        text: "The verification interface is ready. Backend verification will be connected later.",
-      });
-      return;
-    }
+showAlert({ type: "error", message: "Email information is missing. Please register again." });
 
-    setIsSubmitting(true);
-
-    try {
-      const result = await onVerify(code);
-
-      if (result?.success === false) {
-        throw new Error(result.message || "The code could not be verified.");
-      }
-
-      setNotice({
-        type: "success",
-        text: result?.message || "Your email has been verified.",
-      });
-    } catch (error) {
-      setNotice({
-        type: "error",
-        text: error.message || "Verification failed. Please try again.",
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
+    return;
   }
+
+  if (code.length !== OTP_LENGTH) {
+   
+showAlert({ type: "error", message: "Please enter the complete 6-digit verification code" });
+
+    return;
+  }
+
+  const payload = {
+    email: verificationData.email,
+    otp: code,
+  };
+
+  setVerificationData(payload);
+  console.log("OTP verification data:", payload);
+
+  // Baad mein yahan context function call hoga:
+  // const result = await verifyEmail(payload);
+
+}
+
+
+
 
   async function handleResend() {
     setNotice(null);
@@ -185,7 +196,6 @@ export default function OTPVerification({
     success: "border-emerald-200 bg-emerald-50 text-emerald-800",
     info: "border-[#D8B65A]/30 bg-[#D8B65A]/10 text-[#725C2B]",
   };
-
   return (
     <main className="relative isolate grid min-h-[70vh] place-items-center overflow-hidden bg-[#F6F3E8] px-4 py-12 sm:px-6">
       <div
@@ -312,8 +322,7 @@ export default function OTPVerification({
             <p className="mt-3 text-sm leading-7 text-[#65756A]">
               Enter the 6-digit code sent to{" "}
               <span className="font-semibold text-[#123B2B]">
-                {maskEmail(email)}
-              </span>
+{maskEmail(verificationData.email)}              </span>
               .
             </p>
 
@@ -352,9 +361,8 @@ export default function OTPVerification({
                 <p
                   role={notice.type === "error" ? "alert" : "status"}
                   aria-live="polite"
-                  className={`mt-5 rounded-xl border px-4 py-3 text-sm leading-6 ${
-                    noticeStyles[notice.type]
-                  }`}
+                  className={`mt-5 rounded-xl border px-4 py-3 text-sm leading-6 ${noticeStyles[notice.type]
+                    }`}
                 >
                   {notice.text}
                 </p>

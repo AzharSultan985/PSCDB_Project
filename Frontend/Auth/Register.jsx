@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useAuth } from "../Context/AuthContext";
 import { useAlert } from "../Context/Alert";
+import { useNavigate } from "react-router-dom";
 
 const passwordRules = [
   { label: "9+ characters", test: (value) => value.length >= 9 },
@@ -27,6 +28,7 @@ export default function Register({ onRegister }) {
   const [loading, setLoading] = useState(false);
 const {handleRegister  } = useAuth();
 const { showAlert } = useAlert();
+const navigate= useNavigate()
 
   const passwordIsValid = passwordRules.every((rule) =>
     rule.test(form.password),
@@ -75,12 +77,22 @@ async function handleSubmit(event) {
     });
     return;
   }
+const result = await handleRegister(form);
 
-  const result = await handleRegister(form);
+if (!result.success) {
+  showAlert({ type: "error", message: result.message });
+  return;
+}
 
- 
+const registeredUser = result.data?.user ?? result.data;
 
+showAlert({ type: "success", message: result.message });
 
+navigate("/otp-verification", {
+  state: {
+    email: registeredUser?.email ?? form.email,
+  },
+});
   // Form sirf successful registration ke baad clear hoga.
   if (result.success) {
     setForm({
