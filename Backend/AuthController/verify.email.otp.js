@@ -28,11 +28,12 @@ console.log(email,otp)
     }
 
     const user = await User.findOne({ email }).select(
-      "+emailVerification.otpHash",
+      "+emailVerification.otpHash +emailVerification.expiresAt",
     );
 
     const storedHash = user?.emailVerification?.otpHash;
     const expiresAt = user?.emailVerification?.expiresAt;
+    console.log(expiresAt)
 // console.log("[OTP check]", {
 //   userFound: Boolean(user),
 //   isEmailVerified: user?.isEmailVerified,
@@ -40,10 +41,22 @@ console.log(email,otp)
 //   expiresAt: expiresAt ? new Date(expiresAt).toISOString() : null,
 //   now: new Date().toISOString(),
 // });
-    if (!user || !storedHash || !expiresAt) {
+    if (!user ) {
       return res.status(400).json({
         success: false,
-        message: "Invalid or expired verification code.",
+        message: "Invalid User.",
+      });
+    }
+    if (!storedHash ) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid hashed.",
+      });
+    }
+    if ( !expiresAt ) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid expire.",
       });
     }
 

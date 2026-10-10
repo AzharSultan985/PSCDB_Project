@@ -17,10 +17,11 @@ const { showAlert } = useAlert();
     try {
       setLoading(true);
 
-      const result = await Handle_Login({
-        email: email.trim(),
-        password,
-      });
+  const payload = {
+    email: email.trim().toLowerCase(),
+    password
+  };
+      const result = await Handle_Login(payload)
 
       showAlert({
         type: result.success ? "success" : "error",
@@ -133,7 +134,7 @@ const { showAlert } = useAlert();
       <button
         type="submit"
         disabled={loading}
-        className="group inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#167A62] to-[#0B4F3C] text-sm font-bold text-white shadow-[0_5px_0_#073B31,0_12px_24px_-12px_rgba(22,122,98,.7)] transition duration-200 hover:-translate-y-0.5 hover:shadow-[0_7px_0_#073B31,0_16px_28px_-12px_rgba(22,122,98,.75)] active:translate-y-1 active:shadow-[0_2px_0_#073B31] focus:outline-none focus-visible:ring-4 focus-visible:ring-[#167A62]/20 disabled:cursor-wait disabled:opacity-60"
+        className="group inline-flex cursor-pointer h-11 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#167A62] to-[#0B4F3C] text-sm font-bold text-white shadow-[0_5px_0_#073B31,0_12px_24px_-12px_rgba(22,122,98,.7)] transition duration-200 hover:-translate-y-0.5 hover:shadow-[0_7px_0_#073B31,0_16px_28px_-12px_rgba(22,122,98,.75)] active:translate-y-1 active:shadow-[0_2px_0_#073B31] focus:outline-none focus-visible:ring-4 focus-visible:ring-[#167A62]/20 disabled:cursor-wait disabled:opacity-60"
       >
         {loading ? "Signing in..." : "Sign in to your account"}
         {!loading && (
