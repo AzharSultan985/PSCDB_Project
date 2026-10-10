@@ -3,15 +3,15 @@ import User from "../DBModels/StudentProfile.js";
 
 const OTP_LENGTH = 6;
 
-function hashOtp(otp) {
-  const secret = process.env.EMAIL_OTP_SECRET;
+function hashOtp(userId, otp) {
+  const secret = process.env.OTP_HMAC_SECRET;
 
   if (!secret) {
-    throw new Error("EMAIL_OTP_SECRET is not configured.");
+    throw new Error("OTP_HMAC_SECRET is not configured.");
   }
 
   return createHmac("sha256", secret)
-    .update(String(otp), "utf8")
+    .update(`${userId}:${otp}`, "utf8")
     .digest("hex");
 }
 
@@ -19,7 +19,7 @@ export async function verifyEmailOtp(req, res, next) {
   try {
     const email = String(req.body.email || "").trim().toLowerCase();
     const otp = String(req.body.otp || "").trim();
-
+console.log(email,otp)
     if (!email || !new RegExp(`^\\d{${OTP_LENGTH}}$`).test(otp)) {
       return res.status(400).json({
         success: false,
@@ -33,14 +33,21 @@ export async function verifyEmailOtp(req, res, next) {
 
     const storedHash = user?.emailVerification?.otpHash;
     const expiresAt = user?.emailVerification?.expiresAt;
+// console.log("[OTP check]", {
+//   userFound: Boolean(user),
+//   isEmailVerified: user?.isEmailVerified,
+//   hasOtpHash: Boolean(storedHash),
+//   expiresAt: expiresAt ? new Date(expiresAt).toISOString() : null,
+//   now: new Date().toISOString(),
+// });
+    if (!user || !storedHash || !expiresAt) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid or expired verification code.",
+      });
+    }
 
-    if (
-      !user ||
-      user.isEmailVerified ||
-      !storedHash ||
-      !expiresAt ||
-      new Date(expiresAt).getTime() <= Date.now()
-    ) {
+    if (new Date(expiresAt).getTime() <= Date.now()) {
       return res.status(400).json({
         success: false,
         message: "Expired verification code.",
@@ -48,7 +55,10 @@ export async function verifyEmailOtp(req, res, next) {
     }
 
     const storedHashBuffer = Buffer.from(storedHash, "hex");
-    const submittedHashBuffer = Buffer.from(hashOtp(otp), "hex");
+    const submittedHashBuffer = Buffer.from(
+      hashOtp(user._id.toString(), otp),
+      "hex",
+    );
 
     const hashesMatch =
       storedHashBuffer.length === submittedHashBuffer.length &&
@@ -70,7 +80,6 @@ export async function verifyEmailOtp(req, res, next) {
     return res.status(200).json({
       success: true,
       message: "Email verified successfully.",
-  
     });
   } catch (error) {
     next(error);

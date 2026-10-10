@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useAlert } from "../Context/Alert";
 import { useAuth } from "../Context/AuthContext";
 const OTP_LENGTH = 6;
@@ -33,6 +33,7 @@ const {HandleVerificationEmail_OTP ,Handle_Resend_OTP } = useAuth();
   });
 
 
+const navigate= useNavigate()
 
 
   useEffect(() => {
@@ -148,9 +149,22 @@ if (result.success) {
   showAlert({
 
     type:"success",
-    message:result.messgae  })
+    message:result.message  })
+
+
+
+navigate("/student-login", {
+  replace: true,
+  state: {
+    activeTab: "login",
+    email: verificationData.email,
+  },
+});
+}else{
+
+  showAlert({ type: "error", message: result.message });
 }
-showAlert({ type: "error", message: result.message });
+
 
 
   
@@ -166,7 +180,7 @@ showAlert({ type: "error", message: result.message });
 
     setIsResending(true);
     try {
-      const result = await Handle_Resend_OTP(verificationData.email);
+      const result = await Handle_Resend_OTP(emailFromNavigation);
 
       if (result?.success === false) {
         throw new Error(result.message || "A new code could not be sent.");

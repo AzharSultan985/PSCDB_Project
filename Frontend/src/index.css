@@ -114,3 +114,46 @@ body {
     transition: none;
   }
 }
+
+
+@keyframes pscdb-letter-3d {
+  0%,
+  100% {
+    opacity: 0.65;
+    transform: perspective(400px) translateY(2px) rotateX(-22deg) rotateY(-8deg);
+  }
+
+  50% {
+    opacity: 1;
+    transform: perspective(400px) translateY(-2px) rotateX(0) rotateY(8deg);
+  }
+}
+
+@keyframes pscdb-dots {
+  0%,
+  20% {
+    opacity: 0.2;
+  }
+
+  50%,
+  100% {
+    opacity: 1;
+  }
+}
+
+.pscdb-loader-letter {
+  transform-style: preserve-3d;
+  animation: pscdb-letter-3d 1.4s ease-in-out infinite;
+}
+
+.pscdb-sync-dots {
+  display: inline-block;
+  animation: pscdb-dots 1s steps(3, end) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pscdb-loader-letter,
+  .pscdb-sync-dots {
+    animation: none;
+  }
+}

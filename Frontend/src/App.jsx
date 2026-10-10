@@ -97,6 +97,7 @@ export default function App() {
 
 
 <Route path="register" element={<RegisterAuth />} />
+<Route path="/student-login" element={<RegisterAuth />} />
 <Route path="directors" element={<BoardOfDirectors />} />
 <Route path="otp-verification" element={<OTPVerification />} />
 

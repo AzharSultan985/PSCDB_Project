@@ -1,8 +1,11 @@
 import { Outlet } from "react-router-dom";
 import Footer from "./Footer";
 import Navbar from "./Navbar";
+import { useAuth } from "../Context/AuthContext";
+import Loading from "../Components/loading";
 
 export default function MainLayout() {
+  const { authLoading } = useAuth();
   return (
     <div className="flex min-h-screen flex-col bg-white">
       <a
@@ -11,7 +14,10 @@ export default function MainLayout() {
       >
         Skip to main content
       </a>
-
+<Loading
+  show={authLoading}
+  message="Processing your request..."
+/>
       <Navbar />
 
       <main id="main-content" className="flex-1">

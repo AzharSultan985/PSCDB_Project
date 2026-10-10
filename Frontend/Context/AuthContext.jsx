@@ -138,45 +138,100 @@ const HandleVerificationEmail_OTP = useCallback(async (data) => {
 
 
 
+const Handle_Resend_OTP = useCallback(async (email) => {
+  setAuthLoading(true);
 
-const Handle_Resend_OTP = async (email)=>{
-try {
-  setAuthLoading(true)
-
-  const res= await fetch(`${BACKEND_URL}/api/v1/auth/resend-email-otp`, {
+  try {
+    const res = await fetch(
+      `${BACKEND_URL}/api/v1/auth/resend-email-otp`,
+      {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
         },
-        body: JSON.stringify({email}),
-      },)
+        body: JSON.stringify({ email }), 
+      },
+    );
 
     const result = await res.json().catch(() => ({}));
 
-if (!res.ok) {
-  return({
-success:false,
-message:result.message
+    if (!res.ok) {
+      return {
+        success: false,
+        message: result.message || `Resend failed (${res.status}).`,
+      };
+    }
 
-  })
-}
+    return {
+      success: true,
+      message: result.message || "A new code has been sent.",
+    };
+  } catch (error) {
+    console.error("Resend OTP request failed:", error);
+    return {
+      success: false,
+      message: "Could not connect to the server.",
+    };
+  } finally {
+    setAuthLoading(false);
+  }
+}, []);
 
-  return({
-success:true,
-message:result.message
-
-  })
 
 
 
-} catch (error) {
-  console.log(error)
-}finally{
-  setAuthLoading(false)
-}
 
-}
+
+
+
+
+
+
+
+// login 
+
+
+
+const Handle_Login = useCallback(async (payload) => {
+  setAuthLoading(true);
+
+  try {
+    const res = await fetch(
+      `${BACKEND_URL}/api/v1/auth/student-login`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({ payload }), 
+      },
+    );
+
+    const result = await res.json().catch(() => ({}));
+
+    if (!res.ok) {
+      return {
+        success: false,
+        message: result.message || `Login failed (${res.status}).`,
+      };
+    }
+
+    return {
+      success: true,
+      message: result.message || "Login Successfully!",
+    };
+  } catch (error) {
+    console.error("Login request failed:", error);
+    return {
+      success: false,
+      message: "Could not connect to the server.",
+    };
+  } finally {
+    setAuthLoading(false);
+  }
+}, []);
 
   const value = useMemo(
     () => ({
@@ -185,9 +240,9 @@ message:result.message
       authLoading,
       setUser,
       clearUser,
-      handleRegister,HandleVerificationEmail_OTP,Handle_Resend_OTP
+      handleRegister,HandleVerificationEmail_OTP,Handle_Resend_OTP,Handle_Login
     }),
-    [user, authLoading, clearUser, handleRegister,HandleVerificationEmail_OTP],Handle_Resend_OTP,
+    [user, authLoading, clearUser, handleRegister,HandleVerificationEmail_OTP,Handle_Resend_OTP,Handle_Login]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

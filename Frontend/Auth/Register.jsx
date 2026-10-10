@@ -14,7 +14,7 @@ const passwordRules = [
   },
 ];
 
-export default function Register({ onRegister }) {
+export default function Register() {
   const [form, setForm] = useState({
     name: "",
     email: "",

@@ -1,18 +1,28 @@
-import { useState } from "react";
+import { useState,useEffect  } from "react";
 import Login from "./Login";
 import Register from "./Register";
 import { useAuth } from "../Context/AuthContext";
+import { useLocation } from "react-router-dom";
 
 export default function RegisterAuth() {
-  const [activeTab, setActiveTab] = useState("register");
   const [users, setUsers] = useState([]);
   const [signedInUser, setSignedInUser] = useState(null);
 const {  } = useAuth();
+
+    const location = useLocation();
+
+const [activeTab, setActiveTab] = useState(() =>
+  location.state?.activeTab === "login" ? "login" : "register",
+);
+
+useEffect(() => {
+  if (location.state?.activeTab === "login") {
+    setActiveTab("login");
+  }
+}, [location.state]);
+
   function handleRegister(details) {
     const email = details.email.trim().toLowerCase();
-
-
-
 
     
     setUsers((current) => [...current, { ...details, email }]);

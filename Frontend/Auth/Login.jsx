@@ -1,32 +1,35 @@
 import { useState } from "react";
+import { useAuth } from "../Context/AuthContext";
+import { useAlert } from "../Context/Alert";
 
-export default function Login({ onLogin }) {
+export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [notice, setNotice] = useState(null);
   const [loading, setLoading] = useState(false);
+const {Handle_Login  } = useAuth();
+const { showAlert } = useAlert();
 
   async function handleSubmit(event) {
     event.preventDefault();
     setNotice(null);
-
     try {
       setLoading(true);
 
-      const result = await onLogin({
+      const result = await Handle_Login({
         email: email.trim(),
         password,
       });
 
-      setNotice({
-        type: result.ok ? "success" : "error",
-        text: result.message,
+      showAlert({
+        type: result.success ? "success" : "error",
+        message: result.message,
       });
     } catch {
-      setNotice({
+      showAlert({
         type: "error",
-        text: "Sign in failed. Please try again.",
+        message: "Sign in failed. Please try again.",
       });
     } finally {
       setLoading(false);
@@ -143,9 +146,7 @@ export default function Login({ onLogin }) {
         )}
       </button>
 
-      <p className="text-center text-xs text-[#718077]">
-        Demo mode: sign in with an account registered in this session.
-      </p>
+    
     </form>
   );
 }

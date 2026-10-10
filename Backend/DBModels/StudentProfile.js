@@ -36,7 +36,21 @@ isEmailVerified: {
   type: Boolean,
   default: false,
 },
+isFreeze: {
+  type: Boolean,
+  default: false,
+},
 
+
+
+loginAttempts: {
+  type: Number,
+  default: 0,
+},
+lockUntil: {
+  type: Date,
+  default: null,
+},
 emailVerification: {
   otpHash: {
     type: String,
@@ -59,6 +73,13 @@ emailVerification: {
     select: false,
   },
 },
+
+
+
+
+
+
+
     // Student profile details
     profile: {
       bio: {
@@ -121,6 +142,11 @@ emailVerification: {
         default: [],
       },
 
+
+
+
+
+
       visibility: {
         type: String,
         enum: ["private", "public"],
@@ -128,6 +154,9 @@ emailVerification: {
       },
     },
   },
+
+
+
   {
     timestamps: true,
     versionKey: false,
