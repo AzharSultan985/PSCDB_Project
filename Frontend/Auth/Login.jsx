@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useAuth } from "../Context/AuthContext";
 import { useAlert } from "../Context/Alert";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -10,6 +11,7 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
 const {Handle_Login  } = useAuth();
 const { showAlert } = useAlert();
+const navigate= useNavigate()
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -27,6 +29,8 @@ const { showAlert } = useAlert();
         type: result.success ? "success" : "error",
         message: result.message,
       });
+navigate("/")
+
     } catch {
       showAlert({
         type: "error",

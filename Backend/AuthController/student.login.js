@@ -1,8 +1,20 @@
 import argon2 from "argon2";
+import jwt from "jsonwebtoken";
 import User from "../DBModels/StudentProfile.js";
 
 const MAX_LOGIN_ATTEMPTS = 5;
 const LOCK_DURATION_MS = 24 * 60 * 60 * 1000;
+const ACCESS_TOKEN_TTL_MS = 15 * 60 * 1000;
+
+function setAccessCookie(res, token) {
+  res.cookie("pscdb_access", token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    path: "/",
+    maxAge: ACCESS_TOKEN_TTL_MS,
+  });
+}
 
 export async function loginStudent(req, res, next) {
   try {
@@ -16,26 +28,38 @@ export async function loginStudent(req, res, next) {
       });
     }
 
-    const user = await User.findOne({ email }).select("+passwordHash");
+    if (!process.env.JWT_ACCESS_SECRET) {
+      throw new Error("JWT_ACCESS_SECRET is not configured.");
+    }
 
-    // Generic response: account registered hai ya nahi, disclose na ho.
+    const user = await User.findOne({ email }).select("+passwordHash +emailVerification.expiresAt" );
+
     if (!user || !user.passwordHash) {
       return res.status(401).json({
         success: false,
         message: "Invalid email or password.",
       });
     }
-    if (user.isFreeze) {
-      return res.status(401).json({
-        success: false,
-        message: "Your acoount is locked. Please try later.",
-      });
-    }
 
     const now = Date.now();
     const lockExpiry = user.lockUntil
-      ? new Date(user.lockUntil).getTime()
-      : 0;
+      ? new Date(user.lockUntil).getTime(): 0;
+
+    //Temporary 24-hour freeze expire ho gaya ho to unlock karein.
+    if (user.isFreeze && lockExpiry > 0 && lockExpiry <= now) {
+      user.isFreeze = false;
+      user.lockUntil = null;
+      user.loginAttempts = 0;
+      await user.save();
+    }
+
+    // isFreeze without lockUntil ko manual/permanent freeze samjha gaya hai.
+    if (user.isFreeze && (!lockExpiry || lockExpiry > now)) {
+      return res.status(423).json({
+        success: false,
+        message: "Account is locked. Please contact support.",
+      });
+    }
 
     if (lockExpiry > now) {
       return res.status(423).json({
@@ -45,7 +69,6 @@ export async function loginStudent(req, res, next) {
       });
     }
 
-    // Purana lock expire ho gaya ho to attempts reset.
     if (user.lockUntil && lockExpiry <= now) {
       user.loginAttempts = 0;
       user.lockUntil = null;
@@ -61,7 +84,7 @@ export async function loginStudent(req, res, next) {
 
       if (user.loginAttempts >= MAX_LOGIN_ATTEMPTS) {
         user.lockUntil = new Date(Date.now() + LOCK_DURATION_MS);
-        user.isFreeze=true
+        user.isFreeze = true;
         await user.save();
 
         return res.status(423).json({
@@ -86,22 +109,26 @@ export async function loginStudent(req, res, next) {
       });
     }
 
-    // Successful login par failed-attempt counter clear.
     user.loginAttempts = 0;
     user.lockUntil = null;
+    user.isFreeze = false;
     await user.save();
+
+    const accessToken = jwt.sign(
+      { sub: user._id.toString() },
+      process.env.JWT_ACCESS_SECRET,
+      {
+        expiresIn: "15m",
+        issuer: "pscdb",
+        audience: "pscdb-client",
+      },
+    );
+
+    setAccessCookie(res, accessToken);
 
     return res.status(200).json({
       success: true,
-      message: "Login credentials verified.",
-      data: {
-        user: {
-          id: user._id,
-          fullName: user.fullName,
-          email: user.email,
-          phoneNumber: user.phoneNumber,
-        },
-      },
+      message: "Login successful."
     });
   } catch (error) {
     next(error);

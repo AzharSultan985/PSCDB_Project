@@ -5,12 +5,15 @@ import helmet from "helmet";
 import morgan from "morgan";
 import UserAuthRoutes from './Routes/userAuthRoutes.js'
 import connectDB from "./config/db.js";
+import cookieParser from "cookie-parser";
+
 const app = express();
 
 app.use(helmet());
-app.use(cors({ origin: process.env.CLIENT_URL || "http://localhost:5173" }));
+app.use(cors({ origin: process.env.CLIENT_URL || "http://localhost:5173",    credentials: true,
+ }));
 
-
+app.use(cookieParser());
 app.use(express.json({ limit: "10kb" }));
 app.use(express.urlencoded({ extended: true, limit: "10kb" }));
 app.use(morgan("dev"));
