@@ -15,6 +15,7 @@ import ContactPage from "../Components/contact";
 import RegisterAuth from "../Auth/RegisterAuth";
 import BoardOfDirectors from "../Components/BoardOfDirectors";
 import OTPVerification from "../Auth/otpVerification";
+import StudentPortal from "../Modules/LMS/student.portal";
 
 function HomePage() {
   return (
@@ -104,9 +105,12 @@ export default function App() {
 
 
 
-
           <Route path="*" element={<NotFoundPage />} />
         </Route>
+<Route
+  path="/student"
+  element={<StudentPortal />}
+/>
       </Routes>
     </BrowserRouter>
   );
