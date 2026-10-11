@@ -126,3 +126,71 @@
     transition: none !important;
   }
 }
+.student-profile-page {
+  animation: profile-page-enter 650ms cubic-bezier(0.2, 0.75, 0.25, 1) both;
+}
+
+.profile-heading,
+.profile-form-card,
+.profile-aside {
+  animation: profile-rise 650ms cubic-bezier(0.2, 0.75, 0.25, 1) both;
+}
+
+.profile-form-card {
+  animation-delay: 100ms;
+}
+
+.profile-aside {
+  animation-delay: 200ms;
+}
+
+.profile-progress-fill {
+  transition: width 500ms cubic-bezier(0.2, 0.75, 0.25, 1);
+}
+
+.profile-current-study {
+  animation: profile-rise 350ms ease both;
+}
+
+.profile-submit {
+  transform-style: preserve-3d;
+}
+
+@keyframes profile-page-enter {
+  from {
+    opacity: 0;
+    transform: perspective(1200px) translateY(20px) rotateX(2deg);
+  }
+
+  to {
+    opacity: 1;
+    transform: perspective(1200px) translateY(0) rotateX(0);
+  }
+}
+
+@keyframes profile-rise {
+  from {
+    opacity: 0;
+    transform: perspective(1000px) translateY(16px) translateZ(-18px);
+  }
+
+  to {
+    opacity: 1;
+    transform: perspective(1000px) translateY(0) translateZ(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .student-profile-page,
+  .profile-heading,
+  .profile-form-card,
+  .profile-aside,
+  .profile-current-study {
+    animation: none !important;
+  }
+
+  .profile-progress-fill,
+  .profile-submit {
+    transition: none !important;
+  }
+}

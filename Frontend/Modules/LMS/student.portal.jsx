@@ -2,6 +2,7 @@ import { useState } from "react";
 import StudentWelcome from "./StudentWelcome";
 import "./StudentPortal.css";
 import ProgrammesSection from "../Programmes/ProgrammesSection";
+import StudentProfile from "./Student.Profile";
 
 const navItems = [
   { id: "overview", label: "Overview", icon: "grid" },
@@ -56,22 +57,7 @@ function NavIcon({ name }) {
   );
 }
 
-function ComingSoon({ title }) {
-  return (
-    <section className="portal-card portal-page-enter rounded-3xl border border-[#E5EBE3] bg-white p-8 shadow-sm sm:p-12">
-      <span className="inline-flex rounded-full bg-[#EFF6E8] px-3 py-1 text-xs font-bold uppercase tracking-wider text-[#167A62]">
-        Student portal
-      </span>
-      <h1 className="mt-5 text-3xl font-bold tracking-tight text-[#173A30]">
-        {title}
-      </h1>
-      <p className="mt-3 max-w-xl leading-7 text-[#69786F]">
-        This section is being prepared. Your student information and updates
-        will appear here.
-      </p>
-    </section>
-  );
-}
+
 
 export default function StudentPortal({ user, onLogout }) {
   const [activePage, setActivePage] = useState("overview");
@@ -96,7 +82,7 @@ const pageComponents = {
   overview: <StudentWelcome user={user} />,
   programmes: <ProgrammesSection/>,
 //   applications: <Applications />,
-//   profile: <Profile />,
+  profile: <StudentProfile />,
 };
   return (
     <div className="student-portal min-h-screen bg-[#F5F8F4] text-[#173A30]">

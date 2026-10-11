@@ -9,7 +9,7 @@ const programmes = [
     description:
       "Learn to plan and build responsive websites using modern web technologies.",
     skills: ["HTML & CSS", "JavaScript", "Problem solving"],
-    accent: "#A7E85A",
+    accent: "#76A83B",
     initials: "WD",
     slug: "web-development",
   },
@@ -20,7 +20,7 @@ const programmes = [
     description:
       "Develop visual communication skills for digital and print design projects.",
     skills: ["Visual design", "Branding", "Digital media"],
-    accent: "#F2C14E",
+    accent: "#D6A73B",
     initials: "GD",
     slug: "graphic-design",
   },
@@ -31,7 +31,7 @@ const programmes = [
     description:
       "Explore online campaigns, content planning and digital audience engagement.",
     skills: ["Content strategy", "SEO basics", "Campaign planning"],
-    accent: "#65C8FF",
+    accent: "#4B9BB6",
     initials: "DM",
     slug: "digital-marketing",
   },
@@ -42,7 +42,7 @@ const programmes = [
     description:
       "Build a foundation in shaping, planning and communicating a business idea.",
     skills: ["Business planning", "Research", "Communication"],
-    accent: "#FF9D78",
+    accent: "#C77857",
     initials: "EN",
     slug: "entrepreneurship",
   },
@@ -53,7 +53,7 @@ const programmes = [
     description:
       "Strengthen everyday digital skills for organised, productive work.",
     skills: ["Documents", "Spreadsheets", "Digital workflow"],
-    accent: "#B9A0FF",
+    accent: "#8170B5",
     initials: "OP",
     slug: "office-productivity",
   },
@@ -64,7 +64,7 @@ const programmes = [
     description:
       "Practise clear communication for workplace and professional settings.",
     skills: ["Presentations", "Teamwork", "Workplace writing"],
-    accent: "#FF82B2",
+    accent: "#C66F8D",
     initials: "PC",
     slug: "professional-communication",
   },
@@ -100,64 +100,70 @@ export default function ProgrammesSection() {
     });
   }, [activeCategory, searchQuery]);
 
+  function clearFilters() {
+    setSearchQuery("");
+    setActiveCategory("All programmes");
+  }
+
   return (
     <section
       id="programmes"
       aria-labelledby="programmes-heading"
-      className="relative isolate overflow-hidden bg-gradient-to-br from-[#062D26] via-[#083B30] to-[#06271F] px-5 py-20 text-white sm:px-8 sm:py-24 lg:px-10"
+      className="relative isolate overflow-hidden bg-[#F7F8F4] px-5 py-20 text-[#173A30] sm:px-8 sm:py-24 lg:px-10"
     >
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -left-40 top-16 -z-10 h-96 w-96 rounded-full bg-[#A7E85A]/10 blur-3xl"
+        className="pointer-events-none absolute -left-40 top-12 -z-10 h-96 w-96 rounded-full bg-[#DCEBCB]/60 blur-3xl"
       />
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -right-36 bottom-0 -z-10 h-96 w-96 rounded-full bg-[#65C8FF]/10 blur-3xl"
+        className="pointer-events-none absolute -right-40 bottom-10 -z-10 h-96 w-96 rounded-full bg-[#F4E8CC]/60 blur-3xl"
       />
 
       <div className="mx-auto max-w-7xl">
         <ScrollReveal3D as="div" direction="left">
           <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-2xl">
-              <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#B9EF73] sm:text-sm">
-                PSCDB learning Divisions
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#608B3E] sm:text-sm">
+                PSCDB Learning Divisions
               </p>
 
               <h2
                 id="programmes-heading"
-                className="mt-4 text-balance text-4xl font-semibold tracking-[-0.04em] text-[#FFFDF5] sm:text-5xl"
+                className="mt-4 text-balance text-4xl font-semibold tracking-[-0.04em] text-[#173A30] sm:text-5xl"
               >
-                Find a Program
-                <span className="text-[#B9EF73]"> for your Career.</span>
+                Find a programme
+                <span className="text-[#668D3C]"> for your career.</span>
               </h2>
 
-              <p className="mt-5 max-w-xl text-sm leading-7 text-[#D5E9DD] sm:text-base">
+              <p className="mt-5 max-w-xl text-sm leading-7 text-[#68766D] sm:text-base">
                 Explore learning pathways designed to help you build skills,
                 confidence and new possibilities.
               </p>
             </div>
 
             <div className="grid grid-cols-2 gap-3 sm:flex sm:gap-4">
-              <div className="rounded-2xl border border-white/15 bg-white/[0.07] px-5 py-4">
-                <p className="text-2xl font-bold text-[#C4ED70]">
+              <div className="rounded-2xl border border-[#E5E9E1] bg-white px-5 py-4 shadow-sm">
+                <p className="text-2xl font-bold text-[#176247]">
                   {programmes.length}
                 </p>
-                <p className="mt-1 text-xs text-[#D5E9DD]">Catalogue examples</p>
+                <p className="mt-1 text-xs text-[#758178]">
+                  Programme examples
+                </p>
               </div>
 
-              <div className="rounded-2xl border border-white/15 bg-white/[0.07] px-5 py-4">
-                <p className="text-2xl font-bold text-[#F2C14E]">
+              <div className="rounded-2xl border border-[#E5E9E1] bg-white px-5 py-4 shadow-sm">
+                <p className="text-2xl font-bold text-[#B3892F]">
                   {categories.length - 1}
                 </p>
-                <p className="mt-1 text-xs text-[#D5E9DD]">Skill areas</p>
+                <p className="mt-1 text-xs text-[#758178]">Skill areas</p>
               </div>
             </div>
           </div>
         </ScrollReveal3D>
 
-        {/* Search and category filters */}
         <ScrollReveal3D as="div" direction="front" delay={100}>
-          <div className="mt-10 rounded-3xl border border-white/10 bg-[#0B362D]/80 p-4 shadow-[0_24px_70px_-45px_rgba(0,0,0,0.9)] sm:p-5">
+          <div className="mt-10 rounded-3xl border border-[#E5E9E1] bg-white p-4 shadow-[0_18px_55px_-42px_rgba(23,58,48,.3)] sm:p-5">
             <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
               <label className="relative block w-full lg:max-w-sm">
                 <span className="sr-only">Search programmes</span>
@@ -166,7 +172,7 @@ export default function ProgrammesSection() {
                   aria-hidden="true"
                   viewBox="0 0 24 24"
                   fill="none"
-                  className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-[#AFC8B7]"
+                  className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-[#7E8D82]"
                 >
                   <circle
                     cx="10.8"
@@ -188,7 +194,7 @@ export default function ProgrammesSection() {
                   value={searchQuery}
                   onChange={(event) => setSearchQuery(event.target.value)}
                   placeholder="Search skills or programmes"
-                  className="w-full rounded-2xl border border-white/15 bg-[#062D26] py-3.5 pl-12 pr-4 text-sm text-white outline-none transition placeholder:text-[#AFC8B7] focus:border-[#B9EF73] focus:ring-4 focus:ring-[#B9EF73]/10"
+                  className="w-full rounded-2xl border border-[#E3E9E1] bg-[#F8FAF6] py-3.5 pl-12 pr-4 text-sm text-[#173A30] outline-none transition placeholder:text-[#8C988F] focus:border-[#739C4A] focus:ring-4 focus:ring-[#739C4A]/10"
                 />
               </label>
 
@@ -207,8 +213,8 @@ export default function ProgrammesSection() {
                       onClick={() => setActiveCategory(category)}
                       className={`shrink-0 rounded-full px-4 py-2.5 text-xs font-semibold transition duration-300 sm:text-sm ${
                         isActive
-                          ? "bg-[#C4ED70] text-[#123B2B] shadow-[0_0_24px_rgba(196,237,112,0.18)]"
-                          : "border border-white/15 bg-white/[0.05] text-[#E1EBDF] hover:border-[#C4ED70]/50 hover:bg-white/10"
+                          ? "bg-[#176247] text-white shadow-md shadow-[#176247]/15"
+                          : "border border-[#E2E8DF] bg-white text-[#56675B] hover:border-[#A7BE91] hover:bg-[#F5F8F1]"
                       }`}
                     >
                       {category}
@@ -218,13 +224,10 @@ export default function ProgrammesSection() {
               </div>
             </div>
 
-            <div className="mt-4 flex items-center justify-between border-t border-white/10 pt-4">
-              <p
-                aria-live="polite"
-                className="text-sm text-[#D5E9DD]"
-              >
+            <div className="mt-4 flex items-center justify-between border-t border-[#EDF0EB] pt-4">
+              <p aria-live="polite" className="text-sm text-[#68766D]">
                 Showing{" "}
-                <span className="font-bold text-white">
+                <span className="font-bold text-[#173A30]">
                   {visibleProgrammes.length}
                 </span>{" "}
                 {visibleProgrammes.length === 1 ? "programme" : "programmes"}
@@ -233,11 +236,8 @@ export default function ProgrammesSection() {
               {(searchQuery || activeCategory !== "All programmes") && (
                 <button
                   type="button"
-                  onClick={() => {
-                    setSearchQuery("");
-                    setActiveCategory("All programmes");
-                  }}
-                  className="text-sm font-semibold text-[#C4ED70] transition hover:text-white"
+                  onClick={clearFilters}
+                  className="text-sm font-semibold text-[#176247] transition hover:text-[#668D3C]"
                 >
                   Clear filters
                 </button>
@@ -246,7 +246,6 @@ export default function ProgrammesSection() {
           </div>
         </ScrollReveal3D>
 
-        {/* Programme cards */}
         <div className="mt-7 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
           {visibleProgrammes.map((programme, index) => (
             <ScrollReveal3D
@@ -256,37 +255,36 @@ export default function ProgrammesSection() {
               className="h-full"
             >
               <article
-                style={{ "--programme-accent": programme.accent }}
-                className="group relative flex h-full min-h-[350px] flex-col overflow-hidden rounded-[1.75rem] border border-white/15 bg-gradient-to-br from-[#14503E] via-[#0D4034] to-[#0A342C] p-6 shadow-[0_22px_55px_-30px_rgba(0,0,0,0.75)] transition-[transform,border-color,box-shadow] duration-500 ease-out hover:-translate-y-2 hover:border-[var(--programme-accent)]/60 hover:shadow-[0_30px_70px_-32px_rgba(0,0,0,0.85)] motion-reduce:transition-none sm:p-7"
+                className="group relative flex h-full min-h-[350px] flex-col overflow-hidden rounded-[1.75rem] border border-[#E5E9E1] bg-white p-6 shadow-[0_18px_50px_-35px_rgba(23,58,48,.28)] transition duration-500 ease-out hover:-translate-y-2 hover:border-[#CAD8C2] hover:shadow-[0_28px_65px_-35px_rgba(23,58,48,.3)] motion-reduce:transition-none sm:p-7"
               >
                 <div
                   aria-hidden="true"
-                  className="pointer-events-none absolute -right-14 -top-14 h-44 w-44 rounded-full opacity-15 blur-2xl transition duration-500 group-hover:scale-125 group-hover:opacity-35"
+                  className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full opacity-10 blur-2xl transition duration-500 group-hover:scale-125 group-hover:opacity-20"
                   style={{ backgroundColor: programme.accent }}
                 />
 
                 <div className="relative flex items-start justify-between gap-4">
                   <span
-                    className="grid h-14 w-14 place-items-center rounded-2xl border border-white/60 bg-[#F3F5E9] text-sm font-black tracking-wide text-[#123B2B] shadow-lg"
-                    style={{ boxShadow: `0 0 28px ${programme.accent}30` }}
+                    className="grid h-14 w-14 place-items-center rounded-2xl border border-[#E7EADF] bg-[#F7F8F3] text-sm font-black tracking-wide text-[#173A30] transition duration-500 group-hover:-rotate-3 group-hover:scale-105"
+                    style={{ boxShadow: `inset 0 -3px 0 ${programme.accent}` }}
                   >
                     {programme.initials}
                   </span>
 
-                  <span className="rounded-full border border-white/15 bg-black/10 px-3 py-1.5 text-xs font-semibold text-[#E1EBDF]">
+                  <span className="rounded-full border border-[#E9ECE5] bg-[#F8F9F6] px-3 py-1.5 text-xs font-semibold text-[#637268]">
                     {programme.category}
                   </span>
                 </div>
 
-                <h3 className="relative mt-7 text-2xl font-semibold tracking-tight text-[#FFFDF5]">
+                <h3 className="relative mt-7 text-2xl font-semibold tracking-tight text-[#173A30]">
                   {programme.title}
                 </h3>
 
-                <p className="relative mt-3 text-sm leading-7 text-[#D5E5D9]">
+                <p className="relative mt-3 text-sm leading-7 text-[#69776D]">
                   {programme.description}
                 </p>
 
-                <p className="relative mt-5 text-xs font-semibold uppercase tracking-[0.12em] text-[#B9EF73]">
+                <p className="relative mt-5 text-xs font-bold uppercase tracking-[0.12em] text-[#668D3C]">
                   {programme.level}
                 </p>
 
@@ -294,7 +292,7 @@ export default function ProgrammesSection() {
                   {programme.skills.map((skill) => (
                     <span
                       key={skill}
-                      className="rounded-full border border-white/15 bg-white/[0.06] px-3 py-1.5 text-xs text-[#E1EBDF]"
+                      className="rounded-full border border-[#E8ECE5] bg-[#F8F9F6] px-3 py-1.5 text-xs text-[#5F6F64]"
                     >
                       {skill}
                     </span>
@@ -303,7 +301,7 @@ export default function ProgrammesSection() {
 
                 <a
                   href={`/programmes/${programme.slug}`}
-                  className="relative mt-auto inline-flex items-center gap-2 pt-7 text-sm font-bold text-[var(--programme-accent)] focus:outline-none focus-visible:underline"
+                  className="relative mt-auto inline-flex items-center gap-2 pt-7 text-sm font-bold text-[#176247] focus:outline-none focus-visible:underline"
                 >
                   View programme details
                   <span
@@ -319,20 +317,17 @@ export default function ProgrammesSection() {
         </div>
 
         {visibleProgrammes.length === 0 && (
-          <div className="mt-7 rounded-3xl border border-white/15 bg-white/[0.06] px-6 py-14 text-center">
-            <h3 className="text-xl font-semibold text-white">
+          <div className="mt-7 rounded-3xl border border-[#E5E9E1] bg-white px-6 py-14 text-center shadow-sm">
+            <h3 className="text-xl font-semibold text-[#173A30]">
               No matching programmes
             </h3>
-            <p className="mt-2 text-sm text-[#D5E9DD]">
+            <p className="mt-2 text-sm text-[#718077]">
               Try another search term or choose a different skill area.
             </p>
             <button
               type="button"
-              onClick={() => {
-                setSearchQuery("");
-                setActiveCategory("All programmes");
-              }}
-              className="mt-5 rounded-full bg-[#C4ED70] px-5 py-2.5 text-sm font-bold text-[#123B2B] transition hover:bg-[#D7F69A]"
+              onClick={clearFilters}
+              className="mt-5 rounded-full bg-[#176247] px-5 py-2.5 text-sm font-bold text-white transition hover:bg-[#0B4F3C]"
             >
               Reset filters
             </button>
