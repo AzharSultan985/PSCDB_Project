@@ -4,11 +4,14 @@ import './index.css'
 import App from './App.jsx'
 import { AuthProvider } from '../Context/AuthContext.jsx'
 import { AlertProvider } from '../Context/Alert.jsx'
+import { StudentProvider } from '../Context/studentContext.jsx'
 createRoot(document.getElementById('root')).render(
   <StrictMode>
       <AlertProvider>
     <AuthProvider>
-        <App />
+ <StudentProvider>
+  <App />
+</StudentProvider>
     </AuthProvider>
       </AlertProvider>
   </StrictMode>,

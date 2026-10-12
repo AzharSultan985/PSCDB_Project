@@ -29,7 +29,7 @@ const navigate= useNavigate()
         type: result.success ? "success" : "error",
         message: result.message,
       });
-navigate("/")
+navigate("/student")
 
     } catch {
       showAlert({
