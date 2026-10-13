@@ -24,12 +24,14 @@ const navigate= useNavigate()
     password
   };
       const result = await Handle_Login(payload)
-
-      showAlert({
-        type: result.success ? "success" : "error",
-        message: result.message,
-      });
-navigate("/student")
+if (result.success) {
+  
+  showAlert({
+    type: result.success ? "success" : "error",
+    message: result.message,
+  });
+  navigate("/student-portal")
+}
 
     } catch {
       showAlert({

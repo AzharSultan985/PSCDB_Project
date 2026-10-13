@@ -1,14 +1,19 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../Context/AuthContext";
+
 import StudentWelcome from "./StudentWelcome";
 import "./StudentPortal.css";
 import ProgrammesSection from "../Programmes/ProgrammesSection";
 import StudentProfile from "./Student.Profile";
+import { useStudent } from "../../Context/studentContext";
 
 const navItems = [
   { id: "overview", label: "Overview", icon: "grid" },
   { id: "programmes", label: "Programmes", icon: "book" },
   { id: "applications", label: "My applications", icon: "file" },
   { id: "profile", label: "My profile", icon: "user" },
+  { id: "logout", label: "Log out", icon: "logout" },
 ];
 
 function NavIcon({ name }) {
@@ -39,6 +44,12 @@ function NavIcon({ name }) {
         <path d="M5 20a7 7 0 0 1 14 0" />
       </>
     ),
+    logout: (
+      <>
+        <path d="M10 17l5-5-5-5M15 12H3" />
+        <path d="M12 3h6a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-6" />
+      </>
+    ),
   };
 
   return (
@@ -57,12 +68,21 @@ function NavIcon({ name }) {
   );
 }
 
-
-
-export default function StudentPortal({ user, onLogout }) {
+export default function StudentPortal({ user }) {
   const [activePage, setActivePage] = useState("overview");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+  const { handleLogout, authLoading } = useAuth();
+
+  const navigate = useNavigate();
+
+const { studentProfile, fetchStudentProfile } = useStudent();
+
+useEffect(() => {
+  fetchStudentProfile();
+}, [fetchStudentProfile]);
+
+console.log(studentProfile)
   const fullName = user?.fullName || user?.name || "Student";
   const initials = fullName
     .split(" ")
@@ -74,16 +94,31 @@ export default function StudentPortal({ user, onLogout }) {
   const activeLabel =
     navItems.find((item) => item.id === activePage)?.label || "Overview";
 
-  function selectPage(page) {
-    setActivePage(page);
-    setMobileMenuOpen(false);
+  async function logout() {
+    const result = await handleLogout();
+
+    if (result?.success) {
+      navigate("/student-login", { replace: true });
+    }
   }
-const pageComponents = {
-  overview: <StudentWelcome user={user} />,
-  programmes: <ProgrammesSection/>,
-//   applications: <Applications />,
-  profile: <StudentProfile />,
-};
+
+  function selectPage(page) {
+    setMobileMenuOpen(false);
+
+    if (page === "logout") {
+      void logout();
+      return;
+    }
+
+    setActivePage(page);
+  }
+
+  const pageComponents = {
+    overview: <StudentWelcome user={user} />,
+    programmes: <ProgrammesSection />,
+    profile: <StudentProfile />,
+  };
+
   return (
     <div className="student-portal min-h-screen bg-[#F5F8F4] text-[#173A30]">
       {mobileMenuOpen && (
@@ -121,22 +156,26 @@ const pageComponents = {
         <nav aria-label="Student navigation" className="space-y-1">
           {navItems.map((item) => {
             const active = activePage === item.id;
+            const isLogout = item.id === "logout";
 
             return (
               <button
                 key={item.id}
                 type="button"
+                disabled={isLogout && authLoading}
                 aria-current={active ? "page" : undefined}
                 onClick={() => selectPage(item.id)}
-                className={`group flex w-full items-center gap-3 rounded-xl px-3 py-3 text-left text-sm font-semibold transition duration-200 ${
-                  active
-                    ? "bg-[#EAF4E2] text-[#0B684F] shadow-sm"
-                    : "text-[#718077] hover:bg-[#F5F8F4] hover:text-[#173A30]"
+                className={`group flex w-full cursor-pointer items-center gap-3 rounded-xl px-3 py-3 text-left text-sm font-semibold transition duration-200 disabled:cursor-wait disabled:opacity-60 ${
+                  isLogout
+                    ? "text-red-600 hover:bg-red-50"
+                    : active
+                      ? "bg-[#EAF4E2] text-[#0B684F] shadow-sm"
+                      : "text-[#718077] hover:bg-[#F5F8F4] hover:text-[#173A30]"
                 }`}
               >
                 <NavIcon name={item.icon} />
-                {item.label}
-                {active && (
+                {isLogout && authLoading ? "Logging out…" : item.label}
+                {active && !isLogout && (
                   <span className="ml-auto h-1.5 w-1.5 rounded-full bg-[#8EBE43]" />
                 )}
               </button>
@@ -192,21 +231,20 @@ const pageComponents = {
               {initials || "ST"}
             </span>
 
-            {onLogout && (
-              <button
-                type="button"
-                onClick={onLogout}
-                className="hidden rounded-xl border border-[#E5EBE3] px-3 py-2 text-xs font-bold text-[#557066] transition hover:border-red-200 hover:bg-red-50 hover:text-red-700 sm:block"
-              >
-                Log out
-              </button>
-            )}
+            {/* <button
+              type="button"
+              onClick={() => void logout()}
+              disabled={authLoading}
+              className="rounded-xl border border-[#E5EBE3] px-3 py-2 text-xs font-bold text-[#557066] transition hover:border-red-200 hover:bg-red-50 hover:text-red-700 disabled:cursor-wait disabled:opacity-60"
+            >
+              {authLoading ? "Logging out…" : "Log out"}
+            </button> */}
           </div>
         </header>
 
-       <main className=" w-full  p-4 sm:p-7 lg:p-0">
-  {pageComponents[activePage]}
-</main>
+        <main className="w-full p-4 sm:p-7 lg:p-0">
+          {pageComponents[activePage]}
+        </main>
       </div>
     </div>
   );

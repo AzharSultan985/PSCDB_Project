@@ -16,7 +16,8 @@ export function AuthProvider({ children }) {
 
 
 
-
+const [isAuthenticated, setIsAuthenticated] = useState(false);
+const [authChecking, setAuthChecking] = useState(true);
 
 
 
@@ -78,7 +79,8 @@ console.log(result);
   }, []);
 
   const clearUser = useCallback(() => {
-    setUser(null);
+    setUser(null);  setIsAuthenticated(false);
+
   }, []);
 
 
@@ -193,11 +195,36 @@ const Handle_Resend_OTP = useCallback(async (email) => {
 
 
 
+
+const checkSession = useCallback(async () => {
+  setAuthChecking(true);
+
+  try {
+    const response = await fetch(`${BACKEND_URL}/api/v1/auth/me`, {
+      method: "GET",
+      credentials: "include",
+      headers: { Accept: "application/json" },
+    });
+
+    const result = await response.json().catch(() => ({}));
+    const authenticated = response.ok && result.success === true;
+
+    setIsAuthenticated(authenticated);
+    return authenticated;
+  } catch (error) {
+    console.error("Session check failed:", error);
+    setIsAuthenticated(false);
+    return false;
+  } finally {
+    setAuthChecking(false);
+  }
+}, []);
+
 const Handle_Login = useCallback(async (payload) => {
   setAuthLoading(true);
 
   try {
-    const res = await fetch(
+    const response = await fetch(
       `${BACKEND_URL}/api/v1/auth/student-login`,
       {
         method: "POST",
@@ -206,25 +233,81 @@ const Handle_Login = useCallback(async (payload) => {
           "Content-Type": "application/json",
           Accept: "application/json",
         },
-        body: JSON.stringify( payload ), 
+        body: JSON.stringify(payload),
       },
     );
 
-    const result = await res.json().catch(() => ({}));
+    const result = await response.json().catch(() => ({}));
 
-    if (!res.ok) {
+    if (!response.ok || !result.success) {
       return {
         success: false,
-        message: result.message || `Login failed (${res.status}).`,
+        message: result.message || `Login failed (${response.status}).`,
+      };
+    }
+
+    const sessionIsValid = await checkSession();
+
+    if (!sessionIsValid) {
+      return {
+        success: false,
+        message: "Login completed, but the session could not be verified.",
       };
     }
 
     return {
       success: true,
-      message: result.message || "Login Successfully!",
+      message: result.message || "Login successful.",
     };
   } catch (error) {
     console.error("Login request failed:", error);
+
+    return {
+      success: false,
+      message: "Could not connect to the server.",
+    };
+  } finally {
+    setAuthLoading(false);
+  }
+}, [checkSession]);
+
+
+
+
+
+
+
+
+
+const handleLogout = useCallback(async () => {
+  setAuthLoading(true);
+
+  try {
+    const response = await fetch(`${BACKEND_URL}/api/v1/auth/logout`, {
+      method: "POST",
+      credentials: "include",
+      headers: { Accept: "application/json" },
+    });
+
+    const result = await response.json().catch(() => ({}));
+
+    if (!response.ok || result.success !== true) {
+      return {
+        success: false,
+        message: result.message || "Logout failed. Please try again.",
+      };
+    }
+
+    setIsAuthenticated(false);
+    setUser(null);
+
+    return {
+      success: true,
+      message: result.message || "Logged out successfully.",
+    };
+  } catch (error) {
+    console.error("Logout request failed:", error);
+
     return {
       success: false,
       message: "Could not connect to the server.",
@@ -234,17 +317,38 @@ const Handle_Login = useCallback(async (payload) => {
   }
 }, []);
 
+
+
+
+
   const value = useMemo(
-    () => ({
-      user,
-      isAuthenticated: Boolean(user),
-      authLoading,
-      setUser,
-      clearUser,
-      handleRegister,HandleVerificationEmail_OTP,Handle_Resend_OTP,Handle_Login
-    }),
-    [user, authLoading, clearUser, handleRegister,HandleVerificationEmail_OTP,Handle_Resend_OTP,Handle_Login]
-  );
+  () => ({
+    user,
+    isAuthenticated,
+    authChecking,
+    authLoading,
+    setUser,
+    clearUser,
+    checkSession,
+    handleRegister,
+    HandleVerificationEmail_OTP,
+    Handle_Resend_OTP,
+    Handle_Login,setAuthLoading,    handleLogout,
+
+  }),
+  [
+    user,
+    isAuthenticated,
+    authChecking,
+    authLoading,
+    clearUser,
+    checkSession,
+    handleRegister,
+    HandleVerificationEmail_OTP,
+    Handle_Resend_OTP,
+    Handle_Login,setAuthLoading,handleLogout
+  ],
+);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

@@ -3,6 +3,7 @@ import {Router} from 'express'
 import { protected_Middleware } from '../middleware/Protected.Route.js'
 import { saveStudentProfile } from '../controllers/studentProfile.create.js'
 import multer from 'multer';
+import { getStudentProfile } from '../controllers/studentProfile.get.js';
 
 const router =  Router()
 const upload = multer({
@@ -16,7 +17,7 @@ const upload = multer({
 
 
 
-router.patch(
+router.post(
   "/create-profile",
   protected_Middleware,
   upload.fields([
@@ -26,6 +27,6 @@ router.patch(
   saveStudentProfile,
 );
 
-
+router.get("/profile", protected_Middleware, getStudentProfile);
 
 export default  router

@@ -1,5 +1,7 @@
 import { useMemo, useState } from "react";
 import ScrollReveal3D from "../../Components/ScrollReveal3D";
+import ProgrammeEnrollment from "./ProgrammeEnrollment";
+import programmes from "./data/programmes.json";
 
 const programmes = [
   {
@@ -78,6 +80,7 @@ const categories = [
 export default function ProgrammesSection() {
   const [activeCategory, setActiveCategory] = useState("All programmes");
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedProgramme, setSelectedProgramme] = useState(null);
 
   const visibleProgrammes = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
@@ -104,7 +107,14 @@ export default function ProgrammesSection() {
     setSearchQuery("");
     setActiveCategory("All programmes");
   }
-
+if (selectedProgramme) {
+  return (
+    <ProgrammeEnrollment
+      programme={selectedProgramme}
+      onBack={() => setSelectedProgramme(null)}
+    />
+  );
+}
   return (
     <section
       id="programmes"
@@ -287,7 +297,34 @@ export default function ProgrammesSection() {
                 <p className="relative mt-5 text-xs font-bold uppercase tracking-[0.12em] text-[#668D3C]">
                   {programme.level}
                 </p>
+<div className="relative mt-5 grid grid-cols-3 gap-2 border-y border-[#EDF0EB] py-4">
+  <div>
+    <p className="text-[10px] font-bold uppercase tracking-wide text-[#829087]">
+      Duration
+    </p>
+    <p className="mt-1 text-xs font-semibold text-[#173A30]">
+      {programme.duration}
+    </p>
+  </div>
 
+  <div>
+    <p className="text-[10px] font-bold uppercase tracking-wide text-[#829087]">
+      Credits
+    </p>
+    <p className="mt-1 text-xs font-semibold text-[#173A30]">
+      {programme.creditHours} hours
+    </p>
+  </div>
+
+  <div>
+    <p className="text-[10px] font-bold uppercase tracking-wide text-[#829087]">
+      Seats left
+    </p>
+    <p className="mt-1 text-xs font-semibold text-[#173A30]">
+      {Math.max(0, programme.maxSeats - programme.enrolledSeats)}
+    </p>
+  </div>
+</div>
                 <div className="relative mt-4 flex flex-wrap gap-2">
                   {programme.skills.map((skill) => (
                     <span
@@ -299,18 +336,14 @@ export default function ProgrammesSection() {
                   ))}
                 </div>
 
-                <a
-                  href={`/programmes/${programme.slug}`}
-                  className="relative mt-auto inline-flex items-center gap-2 pt-7 text-sm font-bold text-[#176247] focus:outline-none focus-visible:underline"
-                >
-                  View programme details
-                  <span
-                    aria-hidden="true"
-                    className="transition-transform duration-300 group-hover:translate-x-1"
-                  >
-                    →
-                  </span>
-                </a>
+                <button
+  type="button"
+  onClick={() => setSelectedProgramme(programme)}
+  className="relative mt-auto inline-flex items-center gap-2 pt-7 text-left text-sm font-bold text-[#176247] focus:outline-none focus-visible:underline"
+>
+  View details and enrol
+  <span aria-hidden="true">→</span>
+</button>
               </article>
             </ScrollReveal3D>
           ))}

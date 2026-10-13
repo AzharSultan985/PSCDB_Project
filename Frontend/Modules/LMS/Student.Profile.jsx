@@ -3,7 +3,7 @@ import "./StudentPortal.css";
 import { useStudent } from "../../Context/studentContext";
 import { useAlert } from "../../Context/Alert";
 
-
+import StudentProfileDisplay from "./StudentProfileDisplay";
 const initialForm = (user) => ({
   fullName: user?.fullName || user?.name || "",
   age: "",
@@ -111,8 +111,12 @@ export default function StudentProfile({ user }) {
   const [profilePhoto, setProfilePhoto] = useState(null);
   const [photoPreview, setPhotoPreview] = useState("");
   const [notice, setNotice] = useState("");
-  const { studentProfile, setStudentProfile, HandleStudent_Profile } = useStudent();
-  const [latestEducationDocument, setLatestEducationDocument] = useState(null);
+const {
+  studentProfile,
+  setStudentProfile,
+  studentLoading,
+  HandleStudent_Profile,
+} = useStudent();  const [latestEducationDocument, setLatestEducationDocument] = useState(null);
   const [currentEducationDocument, setCurrentEducationDocument] = useState(null);
   const { showAlert } = useAlert();
 
@@ -209,66 +213,66 @@ export default function StudentProfile({ user }) {
   async function handleSubmit(event) {
     event.preventDefault();
 
-    const payload = {
-      fullName: form.fullName.trim(),
-      age: Number(form.age),
-      gender: form.gender || null,
+   const payload = {
+  fullName: form.fullName.trim(),
+  age: Number(form.age),
+  gender: form.gender || null,
 
-      location: {
-        province: form.province,
-        district: form.district.trim(),
-        city: form.city.trim(),
-      },
+  location: {
+    province: form.province,
+    district: form.district.trim(),
+    city: form.city.trim(),
+  },
 
-      latestEducation: {
-        level: form.latestEducationLevel,
-        percentageMarks: Number(form.latestPercentage),
-        completionYear: Number(form.latestCompletionYear),
-        rollNumber: form.latestRollNumber.trim(),
-        resultCard: latestEducationDocument,
-      },
+  latestEducation: {
+    level: form.latestEducationLevel,
+    percentageMarks: Number(form.latestPercentage),
+    completionYear: Number(form.latestCompletionYear),
+    rollNumber: form.latestRollNumber.trim(),
+  },
 
-      currentlyStudying: form.currentlyStudying === "yes",
+  currentlyStudying: form.currentlyStudying === "yes",
 
-      currentEducation:
-        form.currentlyStudying === "yes"
-          ? {
-            level: form.currentEducationLevel,
-            fieldOfStudy: form.currentFieldOfStudy.trim(),
-            institution: form.currentInstitution.trim(),
-            institutionCity: form.currentInstitutionCity.trim(),
+  currentEducation:
+    form.currentlyStudying === "yes"
+      ? {
+          level: form.currentEducationLevel,
+          fieldOfStudy: form.currentFieldOfStudy.trim(),
+          institution: form.currentInstitution.trim(),
+          institutionCity: form.currentInstitutionCity.trim(),
+          rollNumber: form.currentRollNumber.trim(),
+          expectedCompletionYear: Number(form.expectedCompletionYear),
+        }
+      : null,
 
-            expectedCompletionYear: Number(form.expectedCompletionYear),
-          }
-          : null,
+  profilePhoto,
+  latestEducationDocument,
+};
 
-      // File object: actual upload ke liye baad mein FormData use hoga.
-      profilePhoto,
-    };
+if (!latestEducationDocument) {
+  showAlert({
+    type: "error",
+    message: "Please upload your latest education result card.",
+  });
+  return;
+}
 
-
-    const result = await HandleStudent_Profile(payload)
-    if (result.success) {
-      showAlert({
-        type: "success",
-        message: result.message
-      })
-
-    } else {
-      showAlert({
-        type: "error",
-        message: result.message
-      })
-    }
-
+const result = await HandleStudent_Profile(payload);
 
 if (!result?.success) {
   showAlert({
     type: "error",
-    message: result?.message || "Profile save nahi ho saka.",
+    message: result?.message || "Profile could not be saved.",
   });
   return;
 }
+
+showAlert({
+  type: "success",
+  message: result.message,
+});
+
+
 
 
 
@@ -299,7 +303,7 @@ if (!result?.success) {
       "image/png",
       "image/webp",
     ];
-    const maxSize = 5 * 1024 * 1024;
+    const maxSize = 2 * 1024 * 1024;
 
     if (!allowedTypes.includes(file.type)) {
       setNotice("Choose a PDF, JPG, PNG or WEBP document.");
@@ -317,6 +321,34 @@ if (!result?.success) {
     setNotice("");
     event.target.value = "";
   }
+
+
+const savedEducation =
+  studentProfile?.latestEducation ||
+  studentProfile?.profile?.latestEducation;
+
+const hasSavedProfile = Boolean(
+  savedEducation?.level ||
+    studentProfile?.age ||
+    studentProfile?.profile?.age,
+);
+
+if (studentLoading && !studentProfile) {
+  return (
+    <div className="grid min-h-64 place-items-center text-sm font-medium text-[#557066]">
+      Loading your profile…
+    </div>
+  );
+}
+
+if (hasSavedProfile) {
+  return <StudentProfileDisplay student={studentProfile} />;
+}
+
+
+
+
+
   return (
     <div className="student-profile-page mx-auto max-w-7xl">
       <header className="profile-heading mb-7">

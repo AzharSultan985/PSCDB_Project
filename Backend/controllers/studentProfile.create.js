@@ -1,34 +1,18 @@
 import path from "node:path";
-import sharp from "sharp";
-import { PDFParse } from "pdf-parse";
+import { fileURLToPath } from "node:url";
+
 import User from "../DBModels/StudentProfile.js";
+import {
+  badRequest,
+  removeUpload,
+} from "../services/studentUpload.service.js";
+import { storeStudentProfileImage } from "./profileImage.controller.js";
+import { storeLatestEducationDocument } from "./studentDocument.controller.js";
 
-import StudentDocument from "../DBModels/StudentDocument.js";
-
-const TWO_MB = 2 * 1024 * 1024;
 const CURRENT_YEAR = new Date().getFullYear();
-
-const IMAGE_MIMES = {
-  jpeg: "image/jpeg",
-  png: "image/png",
-  webp: "image/webp",
-};
-
-function badRequest(message) {
-  const error = new Error(message);
-  error.statusCode = 400;
-  return error;
-}
-
-function cleanFileName(name = "upload") {
-  // Windows aur Linux dono tarah ke path separators handle karta hai.
-  const baseName = String(name).split(/[\\/]/).pop() || "upload";
-
-  return path
-    .basename(baseName)
-    .replace(/[^\w.-]/g, "_")
-    .slice(0, 150);
-}
+const UPLOADS_DIR = path.resolve(
+  fileURLToPath(new URL("../uploads/", import.meta.url)),
+);
 
 function requiredText(value, label, maxLength = 150) {
   if (typeof value !== "string" || !value.trim()) {
@@ -42,20 +26,6 @@ function requiredText(value, label, maxLength = 150) {
   }
 
   return cleaned;
-}
-
-function parseProfile(req) {
-  try {
-    const profile = JSON.parse(req.body?.profile || "");
-
-    if (!profile || typeof profile !== "object" || Array.isArray(profile)) {
-      throw new Error();
-    }
-
-    return profile;
-  } catch {
-    throw badRequest("Profile data must be valid JSON in the 'profile' field.");
-  }
 }
 
 function requiredNumber(value, label) {
@@ -72,78 +42,31 @@ function requiredNumber(value, label) {
   return number;
 }
 
-async function validateAndEncodeFile(file, { imagesOnly = false } = {}) {
-  if (!file?.buffer?.length) {
-    throw badRequest("Uploaded file is empty or unreadable.");
-  }
+function parseProfile(req) {
+  try {
+    const profile = JSON.parse(req.body?.profile || "");
 
-  if (file.size > TWO_MB || file.buffer.length > TWO_MB) {
-    throw badRequest("Each uploaded file must be 2 MB or smaller.");
-  }
-
-  const buffer = file.buffer;
-  const isPdf = buffer.subarray(0, 5).toString("ascii") === "%PDF-";
-  let mimeType;
-
-  if (isPdf) {
-    if (imagesOnly) {
-      throw badRequest("Profile photo must be a JPG, PNG or WEBP image.");
+    if (!profile || typeof profile !== "object" || Array.isArray(profile)) {
+      throw new Error();
     }
 
-    try {
-      const parser = new PDFParse({
-        data: new Uint8Array(buffer),
-        partial: true,
-        first: 1,
-      });
+    return profile;
+  } catch {
+    throw badRequest("Profile data must be valid JSON in the 'profile' field.");
+  }
+}
 
-      const extracted = await parser.GetText();
-      const readableText = String(extracted?.text || "").replace(/\s/g, "");
+async function removePreviousUpload(relativePath) {
+  if (!relativePath) return;
 
-      if (readableText.length < 3) {
-        throw badRequest(
-          "PDF has no extractable text. Upload a text-readable PDF or an image.",
-        );
-      }
+  const absolutePath = path.resolve(UPLOADS_DIR, relativePath);
 
-      mimeType = "application/pdf";
-    } catch (error) {
-      if (error.statusCode === 400) {
-        throw error;
-      }
-
-      throw badRequest("PDF could not be opened or read.");
-    }
-  } else {
-    try {
-      const image = sharp(buffer, {
-        failOn: "error",
-        limitInputPixels: 40_000_000,
-      });
-
-      const metadata = await image.metadata();
-      mimeType = IMAGE_MIMES[metadata.format];
-
-      if (!mimeType || !metadata.width || !metadata.height) {
-        throw new Error("Unsupported image.");
-      }
-
-      // Image ko decode karke corrupt/truncated file reject karein.
-      await sharp(buffer, {
-        failOn: "error",
-        limitInputPixels: 40_000_000,
-      }).toBuffer();
-    } catch {
-      throw badRequest("File is not a readable JPG, PNG or WEBP image.");
-    }
+  // Stored path ko uploads directory ke andar hi allow karo.
+  if (!absolutePath.startsWith(`${UPLOADS_DIR}${path.sep}`)) {
+    return;
   }
 
-  return {
-    fileName: cleanFileName(file.originalname),
-    mimeType,
-    size: buffer.length,
-    base64: buffer.toString("base64"),
-  };
+  await removeUpload(absolutePath);
 }
 
 export async function saveStudentProfile(req, res, next) {
@@ -156,18 +79,19 @@ export async function saveStudentProfile(req, res, next) {
     }
 
     const profileData = parseProfile(req);
+    const studentId = req.user._id;
 
     const age = requiredNumber(profileData.age, "Age");
     if (!Number.isInteger(age) || age < 13 || age > 100) {
       throw badRequest("Age must be a whole number between 13 and 100.");
     }
 
-    const marksValue = requiredNumber(
+    const percentageMarks = requiredNumber(
       profileData.latestEducation?.percentageMarks,
       "Latest education percentage marks",
     );
 
-    if (marksValue < 0 || marksValue > 100) {
+    if (percentageMarks < 0 || percentageMarks > 100) {
       throw badRequest("Percentage marks must be between 0 and 100.");
     }
 
@@ -184,18 +108,33 @@ export async function saveStudentProfile(req, res, next) {
       throw badRequest("Enter a valid latest education completion year.");
     }
 
-    const latestEducationDocumentFile =
-      req.files?.latestEducationDocument?.[0];
+    const fullName = requiredText(profileData.fullName, "Full name", 100);
+    const province = requiredText(profileData.location?.province, "Province", 100);
+    const district = requiredText(profileData.location?.district, "District", 100);
+    const city = requiredText(profileData.location?.city, "City", 100);
+    const educationLevel = requiredText(
+      profileData.latestEducation?.level,
+      "Latest education level",
+      100,
+    );
+    const latestRollNumber = requiredText(
+      profileData.latestEducation?.rollNumber,
+      "Latest education roll number",
+      50,
+    );
 
-    if (!latestEducationDocumentFile) {
-      throw badRequest(
-        "The latest completed education result card is required.",
-      );
+    const allowedGenders = ["female", "male", "prefer-not-to-say"];
+    const gender = profileData.gender || null;
+
+    if (gender !== null && !allowedGenders.includes(gender)) {
+      throw badRequest("Select a valid gender option.");
     }
 
-    const currentlyStudying = profileData.currentlyStudying === true;
+    const currentlyStudying =
+      profileData.currentlyStudying === true ||
+      profileData.currentlyStudying === "true";
 
-    let currentEducation;
+    let currentEducation = null;
 
     if (currentlyStudying) {
       const expectedCompletionYear = requiredNumber(
@@ -241,42 +180,7 @@ export async function saveStudentProfile(req, res, next) {
       };
     }
 
-    // Dono files DB changes se pehle validate hoti hain.
-    const latestDocument = await validateAndEncodeFile(
-      latestEducationDocumentFile,
-    );
-
-    const profilePhotoFile = req.files?.profilePhoto?.[0];
-    const profilePhoto = profilePhotoFile
-      ? await validateAndEncodeFile(profilePhotoFile, { imagesOnly: true })
-      : undefined;
-
-    const fullName = requiredText(profileData.fullName, "Full name", 100);
-    const province = requiredText(
-      profileData.location?.province,
-      "Province",
-      100,
-    );
-    const district = requiredText(
-      profileData.location?.district,
-      "District",
-      100,
-    );
-    const city = requiredText(profileData.location?.city, "City", 100);
-
-    const allowedGenders = [
-      "female",
-      "male",
-      "prefer-not-to-say",
-    ];
-
-    const gender = profileData.gender || null;
-
-    if (gender !== null && !allowedGenders.includes(gender)) {
-      throw badRequest("Select a valid gender option.");
-    }
-
-    const user = await User.findById(req.user._id);
+    const user = await User.findById(studentId);
 
     if (!user) {
       return res.status(404).json({
@@ -285,7 +189,18 @@ export async function saveStudentProfile(req, res, next) {
       });
     }
 
-    // User model ke profile path mein student ki profile details.
+    const documentFile = req.files?.latestEducationDocument?.[0];
+    const photoFile = req.files?.profilePhoto?.[0];
+
+    // Separate controllers validate and store the uploaded files.
+   const documentResult = await storeLatestEducationDocument({
+  studentId: user._id,
+  studentName: fullName,
+  educationLevel,
+  file: req.files?.latestEducationDocument?.[0],
+});
+    const photoResult = await storeStudentProfileImage(user, photoFile);
+
     user.fullName = fullName;
     user.profile = user.profile || {};
     user.profile.age = age;
@@ -299,20 +214,12 @@ export async function saveStudentProfile(req, res, next) {
       country: "Pakistan",
     };
 
-    // Is object mein document/base64 nahi rakha ja raha.
+    // Document ka filePath StudentDocument collection mein hai.
     user.profile.latestEducation = {
-      level: requiredText(
-        profileData.latestEducation?.level,
-        "Latest education level",
-        100,
-      ),
-      percentageMarks: marksValue,
+      level: educationLevel,
+      percentageMarks,
       completionYear,
-      rollNumber: requiredText(
-        profileData.latestEducation?.rollNumber,
-        "Latest education roll number",
-        50,
-      ),
+      rollNumber: latestRollNumber,
     };
 
     user.profile.currentlyStudying = currentlyStudying;
@@ -320,49 +227,25 @@ export async function saveStudentProfile(req, res, next) {
       ? currentEducation
       : undefined;
 
-    if (profilePhoto) {
-      user.profile.profilePhoto = {
-        fileName: profilePhoto.fileName,
-        mimeType: profilePhoto.mimeType,
-        size: profilePhoto.size,
-        base64: profilePhoto.base64,
-      };
-    }
-
+    user.markModified("profile");
     await user.save();
 
-    // Sirf previous/latest completed education ka document yahan save hoga.
-    // Student ID hamesha protected request se aati hai, body se nahi.
-    await StudentDocument.findOneAndUpdate(
-      {
-        studentId: user._id,
-        documentType: "latest-education-result",
-      },
-      {
-        $set: {
-          studentId: user._id,
-          documentType: "latest-education-result",
-          fileName: latestDocument.fileName,
-          mimeType: latestDocument.mimeType,
-          fileSize: latestDocument.size,
-          base64: latestDocument.base64,
-        },
-      },
-      {
-        upsert: true,
-        new: true,
-        runValidators: true,
-      },
-    );
+    // Naya data save hone ke baad purani files remove karo.
+    await Promise.all([
+      removePreviousUpload(documentResult.previousPath),
+      removePreviousUpload(photoResult?.previousPath),
+    ]);
 
     return res.status(200).json({
       success: true,
-      message: "Student profile saved successfully.",
+      message: "Student profile and files saved successfully.",
       data: {
         studentId: user._id,
-        fullName: user.fullName,
-        profileSaved: true,
-        currentlyStudying,
+        profilePhoto:
+          photoResult?.fileName ||
+          user.profile.profilePhoto?.fileName ||
+          null,
+        educationDocument: documentResult.fileName,
       },
     });
   } catch (error) {
