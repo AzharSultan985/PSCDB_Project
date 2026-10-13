@@ -3,75 +3,6 @@ import ScrollReveal3D from "../../Components/ScrollReveal3D";
 import ProgrammeEnrollment from "./ProgrammeEnrollment";
 import programmes from "./data/programmes.json";
 
-const programmes = [
-  {
-    title: "Web Development",
-    category: "Digital Skills",
-    level: "Foundation to advanced",
-    description:
-      "Learn to plan and build responsive websites using modern web technologies.",
-    skills: ["HTML & CSS", "JavaScript", "Problem solving"],
-    accent: "#76A83B",
-    initials: "WD",
-    slug: "web-development",
-  },
-  {
-    title: "Graphic Design",
-    category: "Creative Skills",
-    level: "Foundation to advanced",
-    description:
-      "Develop visual communication skills for digital and print design projects.",
-    skills: ["Visual design", "Branding", "Digital media"],
-    accent: "#D6A73B",
-    initials: "GD",
-    slug: "graphic-design",
-  },
-  {
-    title: "Digital Marketing",
-    category: "Digital Skills",
-    level: "Foundation to advanced",
-    description:
-      "Explore online campaigns, content planning and digital audience engagement.",
-    skills: ["Content strategy", "SEO basics", "Campaign planning"],
-    accent: "#4B9BB6",
-    initials: "DM",
-    slug: "digital-marketing",
-  },
-  {
-    title: "Entrepreneurship",
-    category: "Business Skills",
-    level: "Foundation to advanced",
-    description:
-      "Build a foundation in shaping, planning and communicating a business idea.",
-    skills: ["Business planning", "Research", "Communication"],
-    accent: "#C77857",
-    initials: "EN",
-    slug: "entrepreneurship",
-  },
-  {
-    title: "Office Productivity",
-    category: "Digital Skills",
-    level: "Foundation to advanced",
-    description:
-      "Strengthen everyday digital skills for organised, productive work.",
-    skills: ["Documents", "Spreadsheets", "Digital workflow"],
-    accent: "#8170B5",
-    initials: "OP",
-    slug: "office-productivity",
-  },
-  {
-    title: "Professional Communication",
-    category: "Career Skills",
-    level: "Foundation to advanced",
-    description:
-      "Practise clear communication for workplace and professional settings.",
-    skills: ["Presentations", "Teamwork", "Workplace writing"],
-    accent: "#C66F8D",
-    initials: "PC",
-    slug: "professional-communication",
-  },
-];
-
 const categories = [
   "All programmes",
   ...new Set(programmes.map((programme) => programme.category)),
@@ -94,7 +25,7 @@ export default function ProgrammesSection() {
         programme.title,
         programme.category,
         programme.description,
-        ...programme.skills,
+        ...(programme.skills || []),
       ]
         .join(" ")
         .toLowerCase();
@@ -107,14 +38,16 @@ export default function ProgrammesSection() {
     setSearchQuery("");
     setActiveCategory("All programmes");
   }
-if (selectedProgramme) {
-  return (
-    <ProgrammeEnrollment
-      programme={selectedProgramme}
-      onBack={() => setSelectedProgramme(null)}
-    />
-  );
-}
+
+  if (selectedProgramme) {
+    return (
+      <ProgrammeEnrollment
+        programme={selectedProgramme}
+        onBack={() => setSelectedProgramme(null)}
+      />
+    );
+  }
+
   return (
     <section
       id="programmes"
@@ -157,9 +90,7 @@ if (selectedProgramme) {
                 <p className="text-2xl font-bold text-[#176247]">
                   {programmes.length}
                 </p>
-                <p className="mt-1 text-xs text-[#758178]">
-                  Programme examples
-                </p>
+                <p className="mt-1 text-xs text-[#758178]">Programmes</p>
               </div>
 
               <div className="rounded-2xl border border-[#E5E9E1] bg-white px-5 py-4 shadow-sm">
@@ -257,96 +188,109 @@ if (selectedProgramme) {
         </ScrollReveal3D>
 
         <div className="mt-7 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-          {visibleProgrammes.map((programme, index) => (
-            <ScrollReveal3D
-              key={programme.slug}
-              direction={index % 2 === 0 ? "left" : "right"}
-              delay={(index % 3) * 100}
-              className="h-full"
-            >
-              <article
-                className="group relative flex h-full min-h-[350px] flex-col overflow-hidden rounded-[1.75rem] border border-[#E5E9E1] bg-white p-6 shadow-[0_18px_50px_-35px_rgba(23,58,48,.28)] transition duration-500 ease-out hover:-translate-y-2 hover:border-[#CAD8C2] hover:shadow-[0_28px_65px_-35px_rgba(23,58,48,.3)] motion-reduce:transition-none sm:p-7"
+          {visibleProgrammes.map((programme, index) => {
+            const maxSeats = Number(programme.maxSeats) || 50;
+            const enrolledSeats = Number(programme.enrolledSeats) || 0;
+            const seatsLeft = Math.max(0, maxSeats - enrolledSeats);
+
+            return (
+              <ScrollReveal3D
+                key={programme.slug}
+                direction={index % 2 === 0 ? "left" : "right"}
+                delay={(index % 3) * 100}
+                className="h-full"
               >
-                <div
-                  aria-hidden="true"
-                  className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full opacity-10 blur-2xl transition duration-500 group-hover:scale-125 group-hover:opacity-20"
-                  style={{ backgroundColor: programme.accent }}
-                />
+                <article className="group relative flex h-full min-h-[390px] flex-col overflow-hidden rounded-[1.75rem] border border-[#E5E9E1] bg-white p-6 shadow-[0_18px_50px_-35px_rgba(23,58,48,.28)] transition duration-500 ease-out hover:-translate-y-2 hover:border-[#CAD8C2] hover:shadow-[0_28px_65px_-35px_rgba(23,58,48,.3)] motion-reduce:transition-none sm:p-7">
+                  <div
+                    aria-hidden="true"
+                    className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full opacity-10 blur-2xl transition duration-500 group-hover:scale-125 group-hover:opacity-20"
+                    style={{ backgroundColor: programme.accent || "#76A83B" }}
+                  />
 
-                <div className="relative flex items-start justify-between gap-4">
-                  <span
-                    className="grid h-14 w-14 place-items-center rounded-2xl border border-[#E7EADF] bg-[#F7F8F3] text-sm font-black tracking-wide text-[#173A30] transition duration-500 group-hover:-rotate-3 group-hover:scale-105"
-                    style={{ boxShadow: `inset 0 -3px 0 ${programme.accent}` }}
-                  >
-                    {programme.initials}
-                  </span>
-
-                  <span className="rounded-full border border-[#E9ECE5] bg-[#F8F9F6] px-3 py-1.5 text-xs font-semibold text-[#637268]">
-                    {programme.category}
-                  </span>
-                </div>
-
-                <h3 className="relative mt-7 text-2xl font-semibold tracking-tight text-[#173A30]">
-                  {programme.title}
-                </h3>
-
-                <p className="relative mt-3 text-sm leading-7 text-[#69776D]">
-                  {programme.description}
-                </p>
-
-                <p className="relative mt-5 text-xs font-bold uppercase tracking-[0.12em] text-[#668D3C]">
-                  {programme.level}
-                </p>
-<div className="relative mt-5 grid grid-cols-3 gap-2 border-y border-[#EDF0EB] py-4">
-  <div>
-    <p className="text-[10px] font-bold uppercase tracking-wide text-[#829087]">
-      Duration
-    </p>
-    <p className="mt-1 text-xs font-semibold text-[#173A30]">
-      {programme.duration}
-    </p>
-  </div>
-
-  <div>
-    <p className="text-[10px] font-bold uppercase tracking-wide text-[#829087]">
-      Credits
-    </p>
-    <p className="mt-1 text-xs font-semibold text-[#173A30]">
-      {programme.creditHours} hours
-    </p>
-  </div>
-
-  <div>
-    <p className="text-[10px] font-bold uppercase tracking-wide text-[#829087]">
-      Seats left
-    </p>
-    <p className="mt-1 text-xs font-semibold text-[#173A30]">
-      {Math.max(0, programme.maxSeats - programme.enrolledSeats)}
-    </p>
-  </div>
-</div>
-                <div className="relative mt-4 flex flex-wrap gap-2">
-                  {programme.skills.map((skill) => (
+                  <div className="relative flex items-start justify-between gap-4">
                     <span
-                      key={skill}
-                      className="rounded-full border border-[#E8ECE5] bg-[#F8F9F6] px-3 py-1.5 text-xs text-[#5F6F64]"
+                      className="grid h-14 w-14 place-items-center rounded-2xl border border-[#E7EADF] bg-[#F7F8F3] text-sm font-black tracking-wide text-[#173A30] transition duration-500 group-hover:-rotate-3 group-hover:scale-105"
+                      style={{
+                        boxShadow: `inset 0 -3px 0 ${programme.accent || "#76A83B"}`,
+                      }}
                     >
-                      {skill}
+                      {programme.initials}
                     </span>
-                  ))}
-                </div>
 
-                <button
-  type="button"
-  onClick={() => setSelectedProgramme(programme)}
-  className="relative mt-auto inline-flex items-center gap-2 pt-7 text-left text-sm font-bold text-[#176247] focus:outline-none focus-visible:underline"
->
-  View details and enrol
-  <span aria-hidden="true">→</span>
-</button>
-              </article>
-            </ScrollReveal3D>
-          ))}
+                    <span className="rounded-full border border-[#E9ECE5] bg-[#F8F9F6] px-3 py-1.5 text-xs font-semibold text-[#637268]">
+                      {programme.category}
+                    </span>
+                  </div>
+
+                  <h3 className="relative mt-7 text-2xl font-semibold tracking-tight text-[#173A30]">
+                    {programme.title}
+                  </h3>
+
+                  <p className="relative mt-3 text-sm leading-7 text-[#69776D]">
+                    {programme.description}
+                  </p>
+
+                  <p className="relative mt-5 text-xs font-bold uppercase tracking-[0.12em] text-[#668D3C]">
+                    {programme.level}
+                  </p>
+
+                  <div className="relative mt-5 grid grid-cols-3 gap-2 border-y border-[#EDF0EB] py-4">
+                    <div>
+                      <p className="text-[10px] font-bold uppercase tracking-wide text-[#829087]">
+                        Duration
+                      </p>
+                      <p className="mt-1 text-xs font-semibold text-[#173A30]">
+                        {programme.duration || "To be announced"}
+                      </p>
+                    </div>
+
+                    <div>
+                      <p className="text-[10px] font-bold uppercase tracking-wide text-[#829087]">
+                        Credits
+                      </p>
+                      <p className="mt-1 text-xs font-semibold text-[#173A30]">
+                        {programme.creditHours ?? "—"} hours
+                      </p>
+                    </div>
+
+                    <div>
+                      <p className="text-[10px] font-bold uppercase tracking-wide text-[#829087]">
+                        Seats left
+                      </p>
+                      <p className="mt-1 text-xs font-semibold text-[#173A30]">
+                        {seatsLeft} / {maxSeats}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="relative mt-4 flex flex-wrap gap-2">
+                    {(programme.skills || []).map((skill) => (
+                      <span
+                        key={skill}
+                        className="rounded-full border border-[#E8ECE5] bg-[#F8F9F6] px-3 py-1.5 text-xs text-[#5F6F64]"
+                      >
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => setSelectedProgramme(programme)}
+                    className="relative mt-auto inline-flex items-center gap-2 pt-7 text-left text-sm font-bold text-[#176247] focus:outline-none focus-visible:underline"
+                  >
+                    View details and enrol
+                    <span
+                      aria-hidden="true"
+                      className="transition-transform duration-300 group-hover:translate-x-1"
+                    >
+                      →
+                    </span>
+                  </button>
+                </article>
+              </ScrollReveal3D>
+            );
+          })}
         </div>
 
         {visibleProgrammes.length === 0 && (
