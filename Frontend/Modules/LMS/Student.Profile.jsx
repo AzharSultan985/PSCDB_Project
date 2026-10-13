@@ -3,6 +3,7 @@ import "./StudentPortal.css";
 import { useStudent } from "../../Context/studentContext";
 import { useAlert } from "../../Context/Alert";
 
+
 const initialForm = (user) => ({
   fullName: user?.fullName || user?.name || "",
   age: "",
@@ -23,7 +24,7 @@ const initialForm = (user) => ({
   currentInstitution: "",
   currentInstitutionCity: "",
   currentRollNumber: "",
-expectedCompletionYear: "",
+  expectedCompletionYear: "",
 });
 
 const inputClass =
@@ -110,20 +111,15 @@ export default function StudentProfile({ user }) {
   const [profilePhoto, setProfilePhoto] = useState(null);
   const [photoPreview, setPhotoPreview] = useState("");
   const [notice, setNotice] = useState("");
-  const { studentProfile, setStudentProfile,HandleStudent_Profile } = useStudent();
-const [latestEducationDocument, setLatestEducationDocument] = useState(null);
-const [currentEducationDocument, setCurrentEducationDocument] = useState(null);
-const { showAlert } = useAlert();
-
-
-
-
-
+  const { studentProfile, setStudentProfile, HandleStudent_Profile } = useStudent();
+  const [latestEducationDocument, setLatestEducationDocument] = useState(null);
+  const [currentEducationDocument, setCurrentEducationDocument] = useState(null);
+  const { showAlert } = useAlert();
 
   useEffect(() => {
     if (!profilePhoto) {
       setPhotoPreview("");
-          return undefined;
+      return undefined;
     }
 
     const objectUrl = URL.createObjectURL(profilePhoto);
@@ -171,21 +167,21 @@ const { showAlert } = useAlert();
       [name]: value,
       ...(name === "currentlyStudying" && value === "no"
         ? {
-            currentEducationLevel: "",
-            currentFieldOfStudy: "",
-            currentInstitution: "",
-            currentInstitutionCity: "",
-            currentRollNumber: "",
-      expectedCompletionYear: "",
-          }
+          currentEducationLevel: "",
+          currentFieldOfStudy: "",
+          currentInstitution: "",
+          currentInstitutionCity: "",
+          currentRollNumber: "",
+          expectedCompletionYear: "",
+        }
         : {}),
     }));
 
     setNotice("");
   }
-if (name === "currentlyStudying" && value === "no") {
-  setCurrentEducationDocument(null);
-}
+  if (name === "currentlyStudying" && value === "no") {
+    setCurrentEducationDocument(null);
+  }
   function handlePhotoChange(event) {
     const file = event.target.files?.[0];
 
@@ -210,7 +206,7 @@ if (name === "currentlyStudying" && value === "no") {
     setNotice("");
   }
 
- async  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
 
     const payload = {
@@ -229,7 +225,7 @@ if (name === "currentlyStudying" && value === "no") {
         percentageMarks: Number(form.latestPercentage),
         completionYear: Number(form.latestCompletionYear),
         rollNumber: form.latestRollNumber.trim(),
-      resultCard: latestEducationDocument,
+        resultCard: latestEducationDocument,
       },
 
       currentlyStudying: form.currentlyStudying === "yes",
@@ -237,13 +233,13 @@ if (name === "currentlyStudying" && value === "no") {
       currentEducation:
         form.currentlyStudying === "yes"
           ? {
-              level: form.currentEducationLevel,
-              fieldOfStudy: form.currentFieldOfStudy.trim(),
-              institution: form.currentInstitution.trim(),
-              institutionCity: form.currentInstitutionCity.trim(),
-      
-  expectedCompletionYear: Number(form.expectedCompletionYear),
-            }
+            level: form.currentEducationLevel,
+            fieldOfStudy: form.currentFieldOfStudy.trim(),
+            institution: form.currentInstitution.trim(),
+            institutionCity: form.currentInstitutionCity.trim(),
+
+            expectedCompletionYear: Number(form.expectedCompletionYear),
+          }
           : null,
 
       // File object: actual upload ke liye baad mein FormData use hoga.
@@ -251,21 +247,28 @@ if (name === "currentlyStudying" && value === "no") {
     };
 
 
-const result =await HandleStudent_Profile(payload)
-if (result.success) {
+    const result = await HandleStudent_Profile(payload)
+    if (result.success) {
+      showAlert({
+        type: "success",
+        message: result.message
+      })
+
+    } else {
+      showAlert({
+        type: "error",
+        message: result.message
+      })
+    }
+
+
+if (!result?.success) {
   showAlert({
-    type:"success",
-    message:result.message
-  })
-  
-} else {
-    showAlert({
-    type:"error",
-    message:result.message
-  })
+    type: "error",
+    message: result?.message || "Profile save nahi ho saka.",
+  });
+  return;
 }
-
-
 
 
 
@@ -285,35 +288,35 @@ if (result.success) {
 
 
 
-function handleEducationDocumentChange(event, setDocument) {
-  const file = event.target.files?.[0];
+  function handleEducationDocumentChange(event, setDocument) {
+    const file = event.target.files?.[0];
 
-  if (!file) return;
+    if (!file) return;
 
-  const allowedTypes = [
-    "application/pdf",
-    "image/jpeg",
-    "image/png",
-    "image/webp",
-  ];
-  const maxSize = 5 * 1024 * 1024;
+    const allowedTypes = [
+      "application/pdf",
+      "image/jpeg",
+      "image/png",
+      "image/webp",
+    ];
+    const maxSize = 5 * 1024 * 1024;
 
-  if (!allowedTypes.includes(file.type)) {
-    setNotice("Choose a PDF, JPG, PNG or WEBP document.");
+    if (!allowedTypes.includes(file.type)) {
+      setNotice("Choose a PDF, JPG, PNG or WEBP document.");
+      event.target.value = "";
+      return;
+    }
+
+    if (file.size > maxSize) {
+      setNotice("Education document must be 5 MB or less.");
+      event.target.value = "";
+      return;
+    }
+
+    setDocument(file);
+    setNotice("");
     event.target.value = "";
-    return;
   }
-
-  if (file.size > maxSize) {
-    setNotice("Education document must be 5 MB or less.");
-    event.target.value = "";
-    return;
-  }
-
-  setDocument(file);
-  setNotice("");
-  event.target.value = "";
-}
   return (
     <div className="student-profile-page mx-auto max-w-7xl">
       <header className="profile-heading mb-7">
@@ -573,40 +576,40 @@ function handleEducationDocumentChange(event, setDocument) {
 
 
             <label className="mt-5 block">
-  <span className="text-sm font-semibold text-[#30483D]">
-    Latest result card or education document
-    <span className="ml-1 text-[#167A62]">*</span>
-  </span>
+              <span className="text-sm font-semibold text-[#30483D]">
+                Latest result card or education document
+                <span className="ml-1 text-[#167A62]">*</span>
+              </span>
 
-  <span className="mt-2 flex min-h-14 cursor-pointer items-center justify-between gap-3 rounded-xl border border-dashed border-[#B8C9B6] bg-[#F8FAF6] px-4 py-3 transition hover:border-[#167A62] hover:bg-[#F1F7EC]">
-    <span className="min-w-0">
-      <span className="block text-sm font-semibold text-[#176247]">
-        {latestEducationDocument
-          ? latestEducationDocument.name
-          : "Choose PDF or image"}
-      </span>
-      <span className="mt-1 block text-xs text-[#829087]">
-        PDF, JPG, PNG or WEBP · up to 5 MB
-      </span>
-    </span>
+              <span className="mt-2 flex min-h-14 cursor-pointer items-center justify-between gap-3 rounded-xl border border-dashed border-[#B8C9B6] bg-[#F8FAF6] px-4 py-3 transition hover:border-[#167A62] hover:bg-[#F1F7EC]">
+                <span className="min-w-0">
+                  <span className="block text-sm font-semibold text-[#176247]">
+                    {latestEducationDocument
+                      ? latestEducationDocument.name
+                      : "Choose PDF or image"}
+                  </span>
+                  <span className="mt-1 block text-xs text-[#829087]">
+                    PDF, JPG, PNG or WEBP · up to 5 MB
+                  </span>
+                </span>
 
-    <span aria-hidden="true" className="text-lg text-[#167A62]">
-      ↑
-    </span>
+                <span aria-hidden="true" className="text-lg text-[#167A62]">
+                  ↑
+                </span>
 
-    <input
-      type="file"
-      accept=".pdf,application/pdf,image/jpeg,image/png,image/webp"
-      onChange={(event) =>
-        handleEducationDocumentChange(
-          event,
-          setLatestEducationDocument,
-        )
-      }
-      className="sr-only"
-    />
-  </span>
-</label>
+                <input
+                  type="file"
+                  accept=".pdf,application/pdf,image/jpeg,image/png,image/webp"
+                  onChange={(event) =>
+                    handleEducationDocumentChange(
+                      event,
+                      setLatestEducationDocument,
+                    )
+                  }
+                  className="sr-only"
+                />
+              </span>
+            </label>
           </section>
 
           <div className="my-8 border-t border-[#EDF1EB]" />
@@ -679,25 +682,25 @@ function handleEducationDocumentChange(event, setDocument) {
                   required
                 />
                 <TextField
-  label="Current roll number"
-  name="currentRollNumber"
-  value={form.currentRollNumber}
-  onChange={handleChange}
-  placeholder="Enter your current roll number"
-  required
-/>
+                  label="Current roll number"
+                  name="currentRollNumber"
+                  value={form.currentRollNumber}
+                  onChange={handleChange}
+                  placeholder="Enter your current roll number"
+                  required
+                />
 
-<TextField
-  label="Expected completion year"
-  name="expectedCompletionYear"
-  type="number"
-  value={form.expectedCompletionYear}
-  onChange={handleChange}
-  placeholder="e.g. 2027"
-  min="2026"
-  max="2100"
-  required
-/>
+                <TextField
+                  label="Expected completion year"
+                  name="expectedCompletionYear"
+                  type="number"
+                  value={form.expectedCompletionYear}
+                  onChange={handleChange}
+                  placeholder="e.g. 2027"
+                  min="2026"
+                  max="2100"
+                  required
+                />
               </div>
             )}
           </section>
@@ -720,7 +723,7 @@ function handleEducationDocumentChange(event, setDocument) {
 
             <button
               type="submit"
-              className="profile-submit inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-[#0B684F] px-6 py-3 text-sm font-bold text-white shadow-lg shadow-[#0B684F]/15 transition duration-300 hover:-translate-y-0.5 hover:bg-[#09563F] focus:outline-none focus-visible:ring-4 focus-visible:ring-[#167A62]/20"
+              className="profile-submit cursor-pointer inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-[#0B684F] px-6 py-3 text-sm font-bold text-white shadow-lg shadow-[#0B684F]/15 transition duration-300 hover:-translate-y-0.5 hover:bg-[#09563F] focus:outline-none focus-visible:ring-4 focus-visible:ring-[#167A62]/20"
             >
               Save profile <span aria-hidden="true">→</span>
             </button>

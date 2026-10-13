@@ -14,5 +14,5 @@ createRoot(document.getElementById('root')).render(
 </StudentProvider>
     </AuthProvider>
       </AlertProvider>
-  </StrictMode>,
+  </StrictMode>
 )

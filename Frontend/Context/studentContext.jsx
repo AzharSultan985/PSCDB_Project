@@ -15,14 +15,12 @@ export function StudentProvider({ children }) {
 
   const BACKEND_URL = "http://localhost:3002";
 
-
-
   const HandleStudent_Profile = async (payload) => {
     try {
       setStudentLoading(true)
-      const res = await fetch(`${BACKEND_URL}/api/v1/lms/student/profile`,
+      const res = await fetch(`${BACKEND_URL}/api/v1/lms/student/create-profile`,
         {
-          method: "POST",
+          method: "patch",
           headers: {
             "Content-Type": "application/json",
             Accept: "application/json",
@@ -39,6 +37,7 @@ export function StudentProvider({ children }) {
         })
 
       }
+
       return ({
         success: true,
         message: result.message
