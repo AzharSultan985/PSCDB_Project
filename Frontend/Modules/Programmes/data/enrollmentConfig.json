@@ -1,0 +1,28 @@
+
+{
+  "currency": "PKR",
+  "modes": {
+    "remote": {
+      "label": "Remote learning",
+      "description": "Learn from home through online classes.",
+      "fee": null
+    },
+    "centre": {
+      "label": "Attend a centre",
+      "description": "Attend classes in person at a PSCDB centre.",
+      "fee": null
+    }
+  },
+  "payment": {
+    "bankName": null,
+    "accountTitle": null,
+    "accountNumber": null,
+    "iban": null
+  },
+  "contractTerms": [
+    "The student must provide accurate information during enrollment.",
+    "The student agrees to follow the programme schedule and learning requirements.",
+    "The final fee and payment deadline will be confirmed by PSCDB.",
+    "Enrollment is confirmed only after PSCDB reviews the application and verifies payment."
+  ]
+}

@@ -200,14 +200,14 @@ export default function ProgrammesSection() {
                 delay={(index % 3) * 100}
                 className="h-full"
               >
-                <article className="group relative flex h-full min-h-[390px] flex-col overflow-hidden rounded-[1.75rem] border border-[#E5E9E1] bg-white p-6 shadow-[0_18px_50px_-35px_rgba(23,58,48,.28)] transition duration-500 ease-out hover:-translate-y-2 hover:border-[#CAD8C2] hover:shadow-[0_28px_65px_-35px_rgba(23,58,48,.3)] motion-reduce:transition-none sm:p-7">
+                <article className="group relative cursor-pointer  flex h-full min-h-[390px] flex-col overflow-hidden rounded-[1.75rem] border border-[#E5E9E1] bg-white p-6 shadow-[0_18px_50px_-35px_rgba(23,58,48,.28)] transition duration-500 ease-out hover:-translate-y-2 hover:border-[#CAD8C2] hover:shadow-[0_28px_65px_-35px_rgba(23,58,48,.3)] motion-reduce:transition-none sm:p-7">
                   <div
                     aria-hidden="true"
                     className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full opacity-10 blur-2xl transition duration-500 group-hover:scale-125 group-hover:opacity-20"
                     style={{ backgroundColor: programme.accent || "#76A83B" }}
                   />
 
-                  <div className="relative flex items-start justify-between gap-4">
+                  <div className="relative cursor-pointer flex items-start justify-between gap-4">
                     <span
                       className="grid h-14 w-14 place-items-center rounded-2xl border border-[#E7EADF] bg-[#F7F8F3] text-sm font-black tracking-wide text-[#173A30] transition duration-500 group-hover:-rotate-3 group-hover:scale-105"
                       style={{
@@ -277,7 +277,7 @@ export default function ProgrammesSection() {
                   <button
                     type="button"
                     onClick={() => setSelectedProgramme(programme)}
-                    className="relative mt-auto inline-flex items-center gap-2 pt-7 text-left text-sm font-bold text-[#176247] focus:outline-none focus-visible:underline"
+                    className="relative mt-auto cursor-pointer  inline-flex items-center gap-2 pt-7 text-left text-sm font-bold text-[#176247] focus:outline-none focus-visible:underline"
                   >
                     View details and enrol
                     <span
