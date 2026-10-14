@@ -178,53 +178,55 @@ export default function HeroSection() {
   delay={220}
   className="relative mx-auto w-full max-w-[660px]"
 >
-  <div className="pscdb-hero-float relative">
-    {/* Soft glow behind the image */}
-    <div
-      aria-hidden="true"
-      className="pointer-events-none absolute -inset-5 rounded-[2rem] bg-[#d6b66b]/15 blur-2xl sm:-inset-7"
+{/* About-style campus visual */}
+<div className="relative mx-auto w-full max-w-[640px] [perspective:1400px]">
+  {/* Soft background glow */}
+  <div
+    aria-hidden="true"
+    className="pointer-events-none absolute -inset-5 rounded-[2rem] bg-[#d6b66b]/20 blur-2xl sm:-inset-7"
+  />
+
+  <figure className="group relative aspect-[1.55/1] overflow-hidden rounded-[1.5rem] border border-white/30 bg-[#0b3027] shadow-[0_30px_80px_-24px_rgba(0,0,0,0.65)] sm:rounded-[2rem]">
+    <img
+      src="/images/PSCDB%20Campus%20Welcome.png"
+      alt="Students gathered outside the PSCDB campus for a welcome event"
+      loading="eager"
+      fetchPriority="high"
+      className="h-full w-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-[1.04] group-hover:[transform:perspective(1400px)_rotateY(-3deg)_rotateX(2deg)_scale(1.04)] motion-reduce:transition-none motion-reduce:transform-none"
     />
 
-    <figure className="pscdb-hero-image-frame group relative aspect-[1.45/1] overflow-hidden rounded-[1.5rem] border border-white/30 bg-[#123b32] shadow-[0_30px_80px_-24px_rgba(0,0,0,0.65)] sm:rounded-[2rem]">
-      <img
-        src="/images/PSCDB Campus Welcome.png"
-        alt="Students arriving at the PSCDB campus for a welcome event"
-        className="h-full w-full object-cover object-center"
-      />
+    <div
+      aria-hidden="true"
+      className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#071f19]/75 via-transparent to-[#071f19]/10"
+    />
 
-      {/* Subtle contrast for the caption */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#071f19]/70 via-transparent to-[#071f19]/10"
-      />
-
-      <figcaption className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-4 sm:p-6">
-        <div>
-          <span className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-[#123b32]/65 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#e8cf8e] backdrop-blur-md sm:text-xs">
-            <span className="h-1.5 w-1.5 rounded-full bg-[#d6b66b]" />
-            Welcome to PSCDB
-          </span>
-
-          <p className="mt-2 text-sm font-semibold text-white drop-shadow sm:text-base">
-            Learn · Connect · Grow
-          </p>
-        </div>
-
-        <span
-          aria-hidden="true"
-          className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-white/30 bg-white/15 text-lg text-white backdrop-blur-md"
-        >
-          ↗
+    <figcaption className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-4 sm:p-6">
+      <div>
+        <span className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-[#123b32]/75 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#e8cf8e] backdrop-blur-md sm:text-xs">
+          <span className="h-1.5 w-1.5 rounded-full bg-[#d6b66b]" />
+          Welcome to PSCDB
         </span>
-      </figcaption>
-    </figure>
 
-    {/* Decorative frame */}
-    <div
-      aria-hidden="true"
-      className="pointer-events-none absolute -bottom-3 -right-3 -z-10 h-full w-full rounded-[1.5rem] border border-[#d6b66b]/50 sm:-bottom-4 sm:-right-4 sm:rounded-[2rem]"
-    />
-  </div>
+        <p className="mt-2 text-sm font-semibold text-white drop-shadow sm:text-base">
+          Learn · Connect · Grow
+        </p>
+      </div>
+
+      <span
+        aria-hidden="true"
+        className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-white/30 bg-white/15 text-lg text-white backdrop-blur-md"
+      >
+        ↗
+      </span>
+    </figcaption>
+  </figure>
+
+  {/* Offset gold frame */}
+  <div
+    aria-hidden="true"
+    className="pointer-events-none absolute -bottom-3 -right-3 -z-10 h-full w-full rounded-[1.5rem] border border-[#d6b66b]/50 sm:-bottom-4 sm:-right-4 sm:rounded-[2rem]"
+  />
+</div>
 </ScrollReveal3D>
 
           <div className="pointer-events-none absolute bottom-1 left-1/2 z-40 -translate-x-1/2 rounded-full border border-white/15 bg-[#123b32]/75 px-3 py-2 text-[10px] font-medium tracking-wide text-white/80 backdrop-blur-md sm:text-xs">

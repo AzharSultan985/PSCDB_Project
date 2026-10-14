@@ -31,7 +31,6 @@ const leadership = [
 
 function LeadershipCard({ leader }) {
   const [imageError, setImageError] = useState(false);
-
   return (
     <article className="group overflow-hidden rounded-3xl border border-white/15 bg-gradient-to-b from-[#14503E] to-[#0A342C] shadow-[0_20px_60px_-35px_rgba(0,0,0,0.8)] transition duration-500 hover:-translate-y-2 hover:border-[#C4ED70]/50 hover:shadow-[0_30px_70px_-35px_rgba(0,0,0,0.9)]">
       <div className="relative aspect-[4/4.2] overflow-hidden bg-[#123B32]">
@@ -87,6 +86,8 @@ const values = [
 ];
 
 export default function AboutUs() {
+const [aboutImageError, setAboutImageError] = useState(false);
+
   return (
     <section
       id="about"
@@ -113,24 +114,24 @@ export default function AboutUs() {
           </ScrollReveal3D>
 
           <ScrollReveal3D as="div" direction="left" delay={100}>
-            <h2 className="mt-6 max-w-2xl text-3xl font-semibold leading-[1.12] tracking-tight text-[#FFFDF5] sm:text-5xl lg:text-6xl">
-              Skills that Open Doors and 
-              <span className="mt-2 block text-[#C4ED70]">
-              Leads  Communities to Develop
-              </span>
-            </h2>
+          <h2 className="mt-6 max-w-2xl text-4xl font-semibold leading-[1.08] tracking-[-0.035em] text-[#FFFDF5] sm:text-5xl lg:text-[3.5rem]">
+  Skills that Open Doors
+  <span className="mt-2 block text-[#C4ED70]">
+    and Empower Communities.
+  </span>
+</h2>
           </ScrollReveal3D>
 
           <ScrollReveal3D as="div" direction="left" delay={180}>
-            <p className="mt-6 max-w-xl text-base leading-8 text-[#E1EBDF] sm:text-lg">
-              At PSCDB , we train  people with practical learning, guidance and pathways
-              toward a stronger future.
-            </p>
-            <p className="mt-4 max-w-xl text-sm leading-7 text-[#BDCEC0] sm:text-base">
-              We bring learners, educators, donors and community partners
-              together to make skill development more accessible and create
-              opportunities to succeed in life and career.
-            </p>
+       <p className="mt-6 max-w-xl text-base leading-7 text-[#E1EBDF] sm:text-lg sm:leading-8">
+  PSCDB helps people build practical skills, grow their confidence and
+  prepare for new opportunities.
+</p>
+
+<p className="mt-4 max-w-xl text-sm leading-7 text-[#BDCEC0] sm:text-base">
+  We connect learners, educators, donors and community partners to make
+  skill development more accessible and support progress in work and life.
+</p>
           </ScrollReveal3D>
 
           <ScrollReveal3D as="div" direction="left" delay={260}>
@@ -148,83 +149,75 @@ export default function AboutUs() {
 
         {/* Values panel */}
         <ScrollReveal3D as="div" direction="right" delay={120}>
-          <div className="relative">
-            {/* Decorative orbit */}
-            <div
-              aria-hidden="true"
-              className="pointer-events-none absolute -right-5 -top-6 h-28 w-28 rounded-full border border-[#C4ED70]/25 motion-safe:animate-[spin_24s_linear_infinite] motion-reduce:animate-none sm:-right-7 sm:-top-8 sm:h-36 sm:w-36"
-            >
-              <span className="absolute left-3 top-5 h-3 w-3 rounded-full bg-[#D8B65A] shadow-[0_0_18px_rgba(216,182,90,0.8)]" />
-            </div>
-
-            <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-[#F6F3E8] p-6 text-[#123B2B] shadow-[0_30px_90px_rgba(0,0,0,0.25)] sm:p-8">
-              <div
-                aria-hidden="true"
-                className="absolute -right-12 -top-12 h-44 w-44 rounded-full bg-[#C4ED70]/35 blur-2xl"
-              />
-
-              <div className="relative flex items-start justify-between gap-4">
-                <div>
-                  <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#55745D]">
-                    What guides us
-                  </p>
-                  <h3 className="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">
-                    Progress with Purpose
-                  </h3>
-                </div>
-
-                <div className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-[#123B2B] text-[#C4ED70] shadow-lg">
-                  <svg
-                    aria-hidden="true"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    className="h-6 w-6"
-                  >
-                    <path
-                      d="M12 3.5 14.5 9l6 .7-4.4 4.1 1.2 5.9L12 16.8l-5.3 2.9 1.2-5.9-4.4-4.1 6-.7L12 3.5Z"
-                      stroke="currentColor"
-                      strokeWidth="1.7"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </div>
-              </div>
-
-              <div className="relative mt-7 space-y-3">
-                {values.map((value) => (
-                  <article
-                    key={value.number}
-                    className="group rounded-2xl border border-[#123B2B]/10 bg-white/80 p-4 transition duration-300 hover:-translate-y-1 hover:border-[#8DBA42]/50 hover:bg-white hover:shadow-[0_12px_30px_rgba(18,59,43,0.1)] sm:p-5"
-                  >
-                    <div className="flex gap-4">
-                      <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-[#EAF3D8] text-sm font-extrabold text-[#42652D] transition-colors duration-300 group-hover:bg-[#C4ED70]">
-                        {value.number}
-                      </span>
-
-                      <div>
-                        <h4 className="font-semibold text-[#123B2B]">
-                          {value.title}
-                        </h4>
-                        <p className="mt-1 text-sm leading-6 text-[#5F7062]">
-                          {value.description}
-                        </p>
-                      </div>
-                    </div>
-                  </article>
-                ))}
-              </div>
-
-              <div className="relative mt-6 flex items-center gap-3 rounded-2xl bg-[#123B2B] px-5 py-4 text-white">
-                <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-[#C4ED70] text-lg font-bold text-[#123B2B]">
-                  +
-                </span>
-                <p className="text-sm leading-6 text-[#E8F0E5]">
-                  Creating opportunity through skills, support and collaboration.
-                </p>
-              </div>
+  <div className="mx-auto max-w-xl">
+    <div className="group relative overflow-hidden rounded-[2rem] border border-white/15 bg-[#0B362D] shadow-[0_30px_90px_rgba(0,0,0,0.35)] transition duration-500 hover:-translate-y-1 hover:shadow-[0_38px_100px_rgba(0,0,0,0.45)]">
+      <div className="relative aspect-[4/3.5] overflow-hidden">
+        {!aboutImageError ? (
+          <img
+            src="/images/about-learning.png"
+            alt="Students arriving at the PSCDB campus"
+            loading="lazy"
+            onError={() => setAboutImageError(true)}
+            className="h-full w-full object-cover transition duration-700 group-hover:scale-[1.04]"
+          />
+        ) : (
+          <div className="grid h-full place-items-center bg-gradient-to-br from-[#14503E] to-[#062D26] p-8 text-center">
+            <div>
+              <span className="mx-auto grid h-16 w-16 place-items-center rounded-2xl bg-[#C4ED70] text-2xl font-black text-[#123B2B]">
+                P
+              </span>
+              <p className="mt-4 text-sm font-semibold text-white">
+                PSCDB Learning Community
+              </p>
+          
             </div>
           </div>
-        </ScrollReveal3D>
+        )}
+
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#06271F]/95 via-[#06271F]/15 to-transparent"
+        />
+
+        <span className="absolute left-5 top-5 rounded-full border border-white/20 bg-[#062D26]/65 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.15em] text-[#D7F69A] backdrop-blur-md sm:left-6 sm:top-6">
+          Our Learning Cmmunity
+        </span>
+
+        <div className="absolute inset-x-0 bottom-0 p-5 sm:p-7">
+          <p className="text-xs font-bold uppercase tracking-[0.16em] text-[#D7F69A]">
+            Learning with Purpose
+          </p>
+          <h3 className="mt-2 max-w-md text-2xl font-semibold leading-tight text-white sm:text-3xl">
+            Practical Skills. Real Opportunities.
+          </h3>
+          <p className="mt-2 max-w-md text-sm leading-6 text-white/80">
+            Bringing Learners and Communities together to Build a Stronger
+           Future.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-3">
+      {values.map((value) => (
+        <article
+          key={value.number}
+          className="rounded-2xl border border-white/10 bg-white/[0.06] p-4 transition duration-300 hover:-translate-y-1 hover:border-[#C4ED70]/40 hover:bg-white/[0.09]"
+        >
+          <span className="text-xs font-extrabold tracking-widest text-[#C4ED70]">
+            {value.number}
+          </span>
+          <h4 className="mt-2 text-sm font-semibold text-white">
+            {value.title}
+          </h4>
+          <p className="mt-1 text-xs leading-5 text-[#BDCEC0]">
+            {value.description}
+          </p>
+        </article>
+      ))}
+    </div>
+  </div>
+</ScrollReveal3D>
       </div>
 
 
