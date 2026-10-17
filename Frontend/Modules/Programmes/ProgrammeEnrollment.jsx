@@ -1,178 +1,271 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../Context/AuthContext";
+import { useAlert } from "../../Context/Alert";
 import { useStudent } from "../../Context/studentContext";
-import enrollmentConfig from "./data/enrollmentConfig.json";
-import EnrollmentContractChallan from "./EnrollmentContractChallan";
+import ScrollReveal3D from "../../Components/ScrollReveal3D";
+import EnrollmentCart from "./EnrollmentCart";
+import InstructorCard from "./InstructorCard";
 
-function ModeCard({ mode, selected, onSelect }) {
+export default function ProgrammeEnrollment({
+  programme,
+  onBack,
+  onContinue,
+}) {
+  const [selectedMode, setSelectedMode] = useState(null);
+  const [imageFailed, setImageFailed] = useState(false);
+
+  const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
+  const { studentProfile } = useStudent();
+  const { showAlert } = useAlert();
+
+  const seatsLeft = Math.max(
+    0,
+    Number(programme.maxSeats || 50) - Number(programme.enrolledSeats || 0),
+  );
+
+  function handleContinue() {
+    if (!selectedMode) {
+      showAlert({
+        type: "warning",
+        message: "Please select Remote or Centre learning first.",
+      });
+      return;
+    }
+
+    if (!isAuthenticated) {
+      showAlert({
+        type: "warning",
+        message: "Please register or log in before enrolling.",
+      });
+
+      navigate("/register", { state: { from: "/programmes" } });
+      return;
+    }
+
+    const student =
+      studentProfile?.data?.student ??
+      studentProfile?.student ??
+      studentProfile ??
+      {};
+
+    const profile = student.profile ?? student;
+    const education = profile.latestEducation ?? student.latestEducation;
+    const location = profile.location ?? student.location;
+
+    const hasCompleteProfile = Boolean(
+      profile.age &&
+        profile.gender &&
+        location?.city &&
+        location?.district &&
+        location?.province &&
+        education?.level &&
+        education?.rollNumber &&
+        education?.completionYear,
+    );
+
+    if (!hasCompleteProfile) {
+      showAlert({
+        type: "warning",
+        message: "Please complete your student profile before enrolling.",
+      });
+
+      navigate("/student-portal", {
+        state: { openTab: "profile" },
+      });
+      return;
+    }
+
+    // Parent component mode set karega; uske baad challan page render hoga.
+    onContinue(selectedMode);
+  }
+
   return (
-    <button
-      type="button"
-      aria-pressed={selected}
-      onClick={onSelect}
-      className={`group rounded-3xl border p-6 text-left transition duration-300 hover:-translate-y-1 hover:shadow-lg focus:outline-none focus-visible:ring-4 focus-visible:ring-[#167A62]/20 ${
-        selected
-          ? "border-[#167A62] bg-[#EFF7E9] shadow-md"
-          : "border-[#E5EBE3] bg-white hover:border-[#B8C9B6]"
-      }`}
-    >
-      <span className="grid h-12 w-12 place-items-center rounded-2xl bg-[#0B4F3C] text-xl text-[#D6F28D]">
-        {mode === "remote" ? "⌂" : "⌖"}
-      </span>
+    <main className="min-h-screen w-full bg-[#F7F8F4] px-4 py-6 text-[#173A30] sm:px-6 sm:py-8">
+      <div className="mx-auto w-full max-w-[1440px]">
+        <button
+          type="button"
+          onClick={onBack}
+          className="mb-5 inline-flex min-h-10 items-center gap-2 rounded-lg text-sm font-bold text-[#176247] hover:text-[#0B4F3C] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#176247]"
+        >
+          <span aria-hidden="true">←</span>
+          All programmes
+        </button>
 
-      <h2 className="mt-5 text-xl font-bold text-[#173A30]">
-        {enrollmentConfig.modes[mode].label}
-      </h2>
+        {/* Portal sidebar ke saath content ko squeeze hone se bachane ke liye cart stack hota hai */}
+        <div className="grid min-w-0 grid-cols-1 items-start gap-6 2xl:grid-cols-[minmax(0,1fr)_320px] 2xl:gap-8">
+          <div className="min-w-0">
+            <ScrollReveal3D as="section" direction="left">
+              <header className="rounded-3xl bg-[#0B3D31] p-5 text-white sm:p-7 lg:p-8">
+                <p className="text-xs font-bold uppercase tracking-[.16em] text-[#D7E99C]">
+                  {programme.category} · {programme.level}
+                </p>
 
-      <p className="mt-2 text-sm leading-6 text-[#718077]">
-        {enrollmentConfig.modes[mode].description}
-      </p>
+                <h1 className="mt-3 max-w-3xl text-2xl font-extrabold leading-tight tracking-tight sm:text-3xl 2xl:text-4xl">
+                  {programme.title}
+                </h1>
 
-      <span className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-[#176247]">
-        Choose this option
-        <span aria-hidden="true">→</span>
-      </span>
-    </button>
+                <p className="mt-3 max-w-2xl text-sm leading-6 text-white/75 sm:text-base">
+                  {programme.description}
+                </p>
+
+                <div className="mt-5 flex flex-wrap gap-x-4 gap-y-2 text-xs text-white/85 sm:text-sm">
+                  <span>★ {Number(programme.rating || 0).toFixed(1)} rating</span>
+                  <span>{programme.studentCount || 0} learners</span>
+                  <span>{programme.duration || "Duration TBA"}</span>
+                  <span>{seatsLeft} seats left</span>
+                </div>
+              </header>
+            </ScrollReveal3D>
+
+            <ScrollReveal3D as="section" direction="front" delay={100}>
+              <div className="mt-5 overflow-hidden rounded-3xl border border-[#E4EAE1] bg-white shadow-sm">
+                <div className="relative aspect-[16/8] overflow-hidden bg-gradient-to-br from-[#0B4F3C] via-[#176247] to-[#A8C66C]">
+                  {programme.thumbnail && !imageFailed ? (
+                    <img
+                      src={programme.thumbnail}
+                      alt={`${programme.title} programme`}
+                      onError={() => setImageFailed(true)}
+                      className="h-full w-full object-cover"
+                    />
+                  ) : (
+                    <div className="grid h-full place-items-center text-4xl font-black text-white/90">
+                      {programme.title.slice(0, 2).toUpperCase()}
+                    </div>
+                  )}
+
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#06271F]/45 to-transparent" />
+
+                  <span className="absolute bottom-4 left-4 rounded-full border border-white/25 bg-[#073B31]/75 px-3 py-1.5 text-xs font-semibold text-white backdrop-blur sm:bottom-5 sm:left-5">
+                    PSCDB · Learn, practise, progress
+                  </span>
+                </div>
+
+                <section className="p-5 sm:p-7">
+                  <h2 className="text-xl font-extrabold sm:text-2xl">
+                    Course overview
+                  </h2>
+
+                  <p className="mt-3 text-sm leading-7 text-[#647268] sm:text-base">
+                    {programme.overview || programme.description}
+                  </p>
+
+                  <div className="mt-5 grid gap-3 sm:grid-cols-3">
+                    <Info label="Duration" value={programme.duration} />
+                    <Info label="Class timing" value={programme.timing} />
+                    <Info
+                      label="Credit hours"
+                      value={
+                        programme.creditHours
+                          ? `${programme.creditHours} hours`
+                          : "To be announced"
+                      }
+                    />
+                  </div>
+                </section>
+              </div>
+            </ScrollReveal3D>
+
+            <section className="mt-5 rounded-3xl border border-[#E4EAE1] bg-white p-5 shadow-sm sm:p-7">
+              <h2 className="text-xl font-extrabold sm:text-2xl">
+                What you’ll learn
+              </h2>
+
+              <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                {(programme.whatYouWillLearn || programme.skills || []).map(
+                  (item) => (
+                    <div
+                      key={item}
+                      className="flex gap-3 text-sm leading-6 text-[#56675B]"
+                    >
+                      <span className="mt-0.5 text-[#62913D]">✓</span>
+                      <span>{item}</span>
+                    </div>
+                  ),
+                )}
+              </div>
+            </section>
+
+            <section className="mt-5 rounded-3xl border border-[#E4EAE1] bg-white p-5 shadow-sm sm:p-7">
+              <h2 className="text-xl font-extrabold sm:text-2xl">
+                Course content
+              </h2>
+
+              <p className="mt-1 text-sm text-[#718077]">
+                {programme.curriculum?.length || 0} learning sections
+              </p>
+
+              <div className="mt-4 divide-y divide-[#EDF0EB]">
+                {(programme.curriculum || []).map((module, index) => (
+                  <div
+                    key={`${module.title}-${index}`}
+                    className="flex flex-wrap items-center justify-between gap-3 py-4"
+                  >
+                    <div className="flex items-start gap-3">
+                      <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-[#EFF6E9] text-xs font-bold text-[#176247]">
+                        {String(index + 1).padStart(2, "0")}
+                      </span>
+
+                      <div>
+                        <h3 className="font-bold text-[#173A30]">
+                          {module.title}
+                        </h3>
+                        <p className="mt-1 text-xs text-[#829087]">
+                          {module.lessons} lessons
+                        </p>
+                      </div>
+                    </div>
+
+                    <span className="text-xs font-semibold text-[#718077]">
+                      {module.duration}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            {programme.requirements?.length > 0 && (
+              <section className="mt-5 rounded-3xl border border-[#E4EAE1] bg-white p-5 shadow-sm sm:p-7">
+                <h2 className="text-xl font-extrabold sm:text-2xl">
+                  Requirements
+                </h2>
+
+                <ul className="mt-4 space-y-2 text-sm leading-6 text-[#56675B]">
+                  {programme.requirements.map((item) => (
+                    <li key={item}>• {item}</li>
+                  ))}
+                </ul>
+              </section>
+            )}
+
+            <section className="mt-5">
+              <h2 className="mb-4 text-xl font-extrabold sm:text-2xl">
+                Your instructor
+              </h2>
+              <InstructorCard instructor={programme.instructor} />
+            </section>
+          </div>
+
+          <EnrollmentCart
+            programme={programme}
+            selectedMode={selectedMode}
+            onSelectMode={setSelectedMode}
+            onContinue={handleContinue}
+          />
+        </div>
+      </div>
+    </main>
   );
 }
 
-export default function ProgrammeEnrollment({ programme, onBack }) {
-  const { studentProfile } = useStudent();
-  const [selectedMode, setSelectedMode] = useState(null);
-  const [preparedPayload, setPreparedPayload] = useState(null);
-
-  const student = studentProfile || {};
-  const studentInfo = student.profile || {};
-
-  function prepareEnrollment({ acceptedContract }) {
-    if (!student._id && !student.id) {
-      return {
-        success: false,
-        message: "Your student profile could not be loaded. Please try again.",
-      };
-    }
-
-    const payload = {
-      studentId: student._id || student.id,
-      programme: {
-        id: programme.id,
-        slug: programme.slug,
-        title: programme.title,
-        category: programme.category,
-        duration: programme.duration,
-        timing: programme.timing,
-        creditHours: programme.creditHours,
-      },
-      attendanceMode: selectedMode,
-      studentSnapshot: {
-        fullName: student.fullName,
-        email: student.email,
-        phoneNumber: student.phoneNumber,
-        age: studentInfo.age,
-        gender: studentInfo.gender,
-        location: studentInfo.location,
-        latestEducation: studentInfo.latestEducation,
-      },
-      contractAccepted: acceptedContract,
-      paymentStatus: "pending",
-      enrollmentStatus: "draft",
-      createdAt: new Date().toISOString(),
-    };
-
-    setPreparedPayload(payload);
-    console.log("Enrollment payload (not sent to backend):", payload);
-
-    return { success: true, payload };
-  }
-
-  if (preparedPayload) {
-    return (
-      <section className="mx-auto max-w-3xl px-5 py-12 sm:px-8">
-        <div className="rounded-3xl border border-[#DCE9D4] bg-white p-7 text-center shadow-sm sm:p-10">
-          <span className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-[#EAF4E2] text-2xl font-bold text-[#167A62]">
-            ✓
-          </span>
-
-          <p className="mt-5 text-xs font-bold uppercase tracking-[0.16em] text-[#608B3E]">
-            Enrollment payload prepared
-          </p>
-
-          <h1 className="mt-2 text-2xl font-bold text-[#173A30]">
-            {programme.title}
-          </h1>
-
-          <p className="mx-auto mt-3 max-w-xl text-sm leading-6 text-[#718077]">
-            Your selection and contract confirmation are saved in component
-            state and the browser console. Nothing has been submitted to the
-            backend yet.
-          </p>
-
-          <button
-            type="button"
-            onClick={onBack}
-            className="mt-6 rounded-xl bg-[#176247] px-5 py-3 text-sm font-bold text-white transition hover:bg-[#0B4F3C]"
-          >
-            Back to programmes
-          </button>
-        </div>
-      </section>
-    );
-  }
-
-  if (selectedMode) {
-    return (
-      <EnrollmentContractChallan
-        programme={programme}
-        mode={selectedMode}
-        student={student}
-        config={enrollmentConfig}
-        onBack={() => setSelectedMode(null)}
-        onPrepare={prepareEnrollment}
-      />
-    );
-  }
-
+function Info({ label, value }) {
   return (
-    <section className="mx-auto max-w-6xl px-5 py-10 sm:px-8 lg:py-14">
-      <button
-        type="button"
-        onClick={onBack}
-        className="mb-6 inline-flex items-center gap-2 text-sm font-bold text-[#176247] hover:text-[#0B4F3C]"
-      >
-        <span aria-hidden="true">←</span> Back to programmes
-      </button>
-
-      <header className="mb-8">
-        <p className="text-xs font-bold uppercase tracking-[0.16em] text-[#608B3E]">
-          {programme.category}
-        </p>
-
-        <h1 className="mt-2 text-3xl font-bold text-[#173A30] sm:text-4xl">
-          Choose how you want to learn
-        </h1>
-
-        <p className="mt-3 text-sm leading-6 text-[#718077]">
-          You selected <strong>{programme.title}</strong>. Choose remote
-          learning or attend classes at a PSCDB centre.
-        </p>
-      </header>
-
-      <div className="grid gap-5 md:grid-cols-2">
-        <ModeCard
-          mode="remote"
-          selected={selectedMode === "remote"}
-          onSelect={() => setSelectedMode("remote")}
-        />
-        <ModeCard
-          mode="centre"
-          selected={selectedMode === "centre"}
-          onSelect={() => setSelectedMode("centre")}
-        />
-      </div>
-
-      <p className="mt-5 text-xs leading-5 text-[#829087]">
-        Your name and contact details will come from your saved student
-        profile; you do not need to enter them again.
+    <div className="rounded-2xl bg-[#F7F9F5] p-4">
+      <p className="text-xs text-[#829087]">{label}</p>
+      <p className="mt-1 text-sm font-bold text-[#173A30]">
+        {value || "To be announced"}
       </p>
-    </section>
+    </div>
   );
 }

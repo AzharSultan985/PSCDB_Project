@@ -1,7 +1,6 @@
 import {
   makeUploadName,
   storeUpload,
-  studentFolderName,
   validateUpload,
 } from "../services/studentUpload.service.js";
 
@@ -9,10 +8,11 @@ export async function storeStudentProfileImage(user, file) {
   if (!file) return null;
 
   const image = await validateUpload(file, { imagesOnly: true });
-  const folder = `profile-images/${studentFolderName(
-    user.fullName,
-    user._id,
-  )}`;
+
+  // Sab profile images isi folder mein save hongi.
+  const folder = "profile-images";
+
+  // Filename mein student ka naam, ID ke last 5 characters aur unique suffix hoga.
   const fileName = makeUploadName(
     "profile",
     user.fullName,

@@ -1,98 +1,173 @@
 [
   {
-    "id": "pscdb-web-development",
-    "slug": "web-development",
-    "title": "Web Development",
-    "category": "Digital Skills",
-    "level": "Foundation to advanced",
-    "description": "Learn to plan and build responsive websites using modern web technologies.",
-    "skills": ["HTML & CSS", "JavaScript", "Problem solving"],
-    "initials": "WD",
-    "accent": "#76A83B",
+    "id": "course-web-001",
+    "slug": "modern-web-development",
+    "title": "Modern Web Development",
+    "category": "Technology",
+    "level": "Beginner",
+    "description": "Build responsive websites and learn the foundations of modern frontend development.",
+    "overview": "A practical programme covering HTML, CSS, JavaScript and React. Learners build projects while developing skills they can use in real-world work.",
+    "thumbnail": "/images/programmes/web-development.jpg",
     "duration": "12 weeks",
-    "timing": "Monday–Friday · 4:00–6:00 PM",
-    "creditHours": 6,
+    "timing": "Mon–Fri · 2:00 PM",
+    "creditHours": 72,
     "maxSeats": 50,
-    "enrolledSeats": 18
+    "enrolledSeats": 32,
+    "rating": 4.8,
+    "reviewCount": 126,
+    "studentCount": 340,
+    "accent": "#78A942",
+    "instructor": {
+      "name": "PSCDB Training Team",
+      "role": "Web Development Instructors",
+      "image": "/images/instructors/web-instructor.jpg",
+      "bio": "Industry-focused mentors helping learners build practical web development skills."
+    },
+    "whatYouWillLearn": [
+      "Create responsive pages with HTML and CSS",
+      "Write interactive features with JavaScript",
+      "Build reusable interfaces with React",
+      "Publish projects and present a portfolio"
+    ],
+    "curriculum": [
+      { "title": "Web foundations", "lessons": 8, "duration": "2 weeks" },
+      { "title": "Responsive HTML and CSS", "lessons": 12, "duration": "3 weeks" },
+      { "title": "JavaScript essentials", "lessons": 14, "duration": "3 weeks" },
+      { "title": "React and portfolio project", "lessons": 16, "duration": "4 weeks" }
+    ],
+    "requirements": [
+      "Basic computer and internet use",
+      "A laptop is recommended for practical work"
+    ],
+    "modes": {
+      "remote": {
+        "label": "Remote learning",
+        "description": "Attend live online sessions from home.",
+        "fee": 15000,
+        "schedule": "Live online classes · 3 sessions per week",
+        "location": "Online",
+        "includes": ["Live instructor sessions", "Digital learning material", "Project feedback"]
+      },
+      "centre": {
+        "label": "At a PSCDB centre",
+        "description": "Join instructor-led classes at a PSCDB training centre.",
+        "fee": 22000,
+        "schedule": "On-campus classes · 3 sessions per week",
+        "location": "Sahiwal Training Centre",
+        "includes": ["Classroom instruction", "Computer lab access", "Project feedback"]
+      }
+    }
   },
   {
-    "id": "pscdb-graphic-design",
-    "slug": "graphic-design",
-    "title": "Graphic Design",
-    "category": "Creative Skills",
-    "level": "Foundation to advanced",
-    "description": "Develop visual communication skills for digital and print design projects.",
-    "skills": ["Visual design", "Branding", "Digital media"],
-    "initials": "GD",
-    "accent": "#D6A73B",
-    "duration": "10 weeks",
-    "timing": "Monday–Friday · 10:00 AM–12:00 PM",
-    "creditHours": 5,
-    "maxSeats": 50,
-    "enrolledSeats": 32
-  },
-  {
-    "id": "pscdb-digital-marketing",
+    "id": "course-digital-002",
     "slug": "digital-marketing",
     "title": "Digital Marketing",
-    "category": "Digital Skills",
-    "level": "Foundation to advanced",
-    "description": "Explore online campaigns, content planning and digital audience engagement.",
-    "skills": ["Content strategy", "SEO basics", "Campaign planning"],
-    "initials": "DM",
-    "accent": "#4B9BB6",
+    "category": "Business",
+    "level": "Beginner",
+    "description": "Learn how to plan campaigns, reach audiences and measure digital results.",
+    "overview": "An applied introduction to content, social media, search and campaign analytics for small businesses and organisations.",
+    "thumbnail": "/images/programmes/digital-marketing.jpg",
     "duration": "8 weeks",
-    "timing": "Monday–Friday · 2:00–4:00 PM",
-    "creditHours": 4,
+    "timing": "Mon–Fri · 4:00 PM",
+    "creditHours": 48,
     "maxSeats": 50,
-    "enrolledSeats": 50
+    "enrolledSeats": 28,
+    "rating": 4.7,
+    "reviewCount": 94,
+    "studentCount": 275,
+    "accent": "#D7A942",
+    "instructor": {
+      "name": "PSCDB Training Team",
+      "role": "Digital Skills Instructors",
+      "image": "",
+      "bio": "Mentors introducing practical tools and methods for digital marketing."
+    },
+    "whatYouWillLearn": [
+      "Plan content for digital channels",
+      "Understand search and social media campaigns",
+      "Create a simple campaign plan",
+      "Read basic analytics and improve results"
+    ],
+    "curriculum": [
+      { "title": "Digital marketing foundations", "lessons": 8, "duration": "2 weeks" },
+      { "title": "Content and social media", "lessons": 10, "duration": "2 weeks" },
+      { "title": "Search and campaign planning", "lessons": 10, "duration": "2 weeks" },
+      { "title": "Analytics and final campaign", "lessons": 10, "duration": "2 weeks" }
+    ],
+    "requirements": ["Basic computer and internet use"],
+    "modes": {
+      "remote": {
+        "label": "Remote learning",
+        "description": "Attend live online sessions from home.",
+        "fee": 12000,
+        "schedule": "Live online classes · 3 sessions per week",
+        "location": "Online",
+        "includes": ["Live instructor sessions", "Digital learning material", "Campaign feedback"]
+      },
+      "centre": {
+        "label": "At a PSCDB centre",
+        "description": "Join instructor-led classes at a PSCDB training centre.",
+        "fee": 18000,
+        "schedule": "On-campus classes · 3 sessions per week",
+        "location": "Sahiwal Training Centre",
+        "includes": ["Classroom instruction", "Computer lab access", "Campaign feedback"]
+      }
+    }
   },
   {
-    "id": "pscdb-entrepreneurship",
-    "slug": "entrepreneurship",
-    "title": "Entrepreneurship",
-    "category": "Business Skills",
-    "level": "Foundation to advanced",
-    "description": "Build a foundation in shaping, planning and communicating a business idea.",
-    "skills": ["Business planning", "Research", "Communication"],
-    "initials": "EN",
-    "accent": "#C77857",
-    "duration": "8 weeks",
-    "timing": "Saturday–Sunday · 10:00 AM–1:00 PM",
-    "creditHours": 4,
-    "maxSeats": 50,
-    "enrolledSeats": 21
-  },
-  {
-    "id": "pscdb-office-productivity",
+    "id": "course-office-003",
     "slug": "office-productivity",
     "title": "Office Productivity",
-    "category": "Digital Skills",
-    "level": "Foundation to advanced",
-    "description": "Strengthen everyday digital skills for organised, productive work.",
-    "skills": ["Documents", "Spreadsheets", "Digital workflow"],
-    "initials": "OP",
-    "accent": "#8170B5",
+    "category": "Professional Skills",
+    "level": "Foundation",
+    "description": "Build confidence with office tools, documents, spreadsheets and professional workflows.",
+    "overview": "A foundation programme for learners who want to use common office applications and workplace communication tools effectively.",
+    "thumbnail": "/images/programmes/office-productivity.jpg",
     "duration": "6 weeks",
-    "timing": "Monday–Friday · 9:00–11:00 AM",
-    "creditHours": 3,
+    "timing": "Mon–Fri · 11:00 AM",
+    "creditHours": 36,
     "maxSeats": 50,
-    "enrolledSeats": 12
-  },
-  {
-    "id": "pscdb-professional-communication",
-    "slug": "professional-communication",
-    "title": "Professional Communication",
-    "category": "Career Skills",
-    "level": "Foundation to advanced",
-    "description": "Practise clear communication for workplace and professional settings.",
-    "skills": ["Presentations", "Teamwork", "Workplace writing"],
-    "initials": "PC",
-    "accent": "#C66F8D",
-    "duration": "6 weeks",
-    "timing": "Saturday–Sunday · 2:00–5:00 PM",
-    "creditHours": 3,
-    "maxSeats": 50,
-    "enrolledSeats": 27
+    "enrolledSeats": 18,
+    "rating": 4.6,
+    "reviewCount": 71,
+    "studentCount": 190,
+    "accent": "#4E9A80",
+    "instructor": {
+      "name": "PSCDB Training Team",
+      "role": "Professional Skills Instructors",
+      "image": "",
+      "bio": "Instructors supporting learners with practical office and workplace skills."
+    },
+    "whatYouWillLearn": [
+      "Prepare and format professional documents",
+      "Organise data in spreadsheets",
+      "Create clear presentations",
+      "Use professional email and file workflows"
+    ],
+    "curriculum": [
+      { "title": "Digital workplace basics", "lessons": 6, "duration": "1 week" },
+      { "title": "Documents and presentations", "lessons": 10, "duration": "2 weeks" },
+      { "title": "Spreadsheets and data", "lessons": 10, "duration": "2 weeks" },
+      { "title": "Workplace communication", "lessons": 5, "duration": "1 week" }
+    ],
+    "requirements": ["No previous office software experience required"],
+    "modes": {
+      "remote": {
+        "label": "Remote learning",
+        "description": "Attend live online sessions from home.",
+        "fee": 9000,
+        "schedule": "Live online classes · 3 sessions per week",
+        "location": "Online",
+        "includes": ["Live instructor sessions", "Digital learning material", "Practice exercises"]
+      },
+      "centre": {
+        "label": "At a PSCDB centre",
+        "description": "Join instructor-led classes at a PSCDB training centre.",
+        "fee": 14000,
+        "schedule": "On-campus classes · 3 sessions per week",
+        "location": "Sahiwal Training Centre",
+        "includes": ["Classroom instruction", "Computer lab access", "Practice exercises"]
+      }
+    }
   }
 ]

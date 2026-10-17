@@ -3,10 +3,11 @@ import { useEffect, useRef, useState } from "react";
 const links = [
   { label: "Home", href: "/" },
   { label: "About Us", href: "/about" },
-  { label: "Governce & Managment", href: "/directors" },
+  { label: "Managment", href: "/directors" },
   { label: "Projects", href: "/our-work" },
+  { label: "Programs", href: "/programmes" },
   { label: "Contact Us", href: "/contact" },
-  { label: "Student Portal", href: "/contact" },
+  { label: "Student Portal", href: "/student-portal" },
 ];
 
 function MenuIcon({ open }) {

@@ -4,6 +4,7 @@ import { protected_Middleware } from '../middleware/Protected.Route.js'
 import { saveStudentProfile } from '../controllers/studentProfile.create.js'
 import multer from 'multer';
 import { getStudentProfile } from '../controllers/studentProfile.get.js';
+import { getStudentProfilePhoto } from '../controllers/studentProfile.photo.get.js';
 
 const router =  Router()
 const upload = multer({
@@ -29,4 +30,9 @@ router.post(
 
 router.get("/profile", protected_Middleware, getStudentProfile);
 
+router.get(
+  "/profile-photo",
+  protected_Middleware,
+  getStudentProfilePhoto,
+);
 export default  router

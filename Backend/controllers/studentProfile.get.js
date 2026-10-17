@@ -28,11 +28,9 @@ export async function getStudentProfile(req, res, next) {
       });
     }
 
-    const hasProfilePhoto = Boolean(
-      student.profilePhoto?.fileName ||
-        student.profilePhoto?.storageName ||
-        student.profilePhoto?.path,
-    );
+const photo = student.profile?.profilePhoto ?? student.profilePhoto;
+
+const hasProfilePhoto = Boolean(photo?.filePath);
 
     const studentData = {
       id: student._id,
@@ -49,9 +47,10 @@ export async function getStudentProfile(req, res, next) {
       createdAt: student.createdAt,
       updatedAt: student.updatedAt,
 
-      profilePhotoUrl: hasProfilePhoto
-        ? `${process.env.API_BASE_URL || "http://localhost:3002"}/api/v1/lms/student/profile-photo`
-        : null,
+   
+profilePhotoUrl: hasProfilePhoto
+  ? `${process.env.API_BASE_URL || "http://localhost:3002"}/api/v1/lms/student/profile-photo`
+  : null,
     };
 
     return res.status(200).json({
