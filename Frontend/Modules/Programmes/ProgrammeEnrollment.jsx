@@ -241,7 +241,7 @@ export default function ProgrammeEnrollment({
 
             <section className="mt-5">
               <h2 className="mb-4 text-xl font-extrabold sm:text-2xl">
-                Your instructor
+                Our Instructor
               </h2>
               <InstructorCard instructor={programme.instructor} />
             </section>

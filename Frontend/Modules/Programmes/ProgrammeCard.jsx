@@ -40,12 +40,12 @@ export default function ProgrammeCard({ programme, onSelect }) {
   );
 
   return (
-    <article className="group overflow-hidden rounded-3xl border border-[#E4EAE1] bg-white shadow-[0_18px_55px_-38px_rgba(23,58,48,.35)] transition duration-300 hover:-translate-y-1.5 hover:border-[#B8C9A7] hover:shadow-[0_28px_65px_-38px_rgba(23,58,48,.42)]">
+    <article className="group overflow-hidden cursor-pointer rounded-3xl border border-[#E4EAE1] bg-white shadow-[0_18px_55px_-38px_rgba(23,58,48,.35)] transition duration-300 hover:-translate-y-1.5 hover:border-[#B8C9A7] hover:shadow-[0_28px_65px_-38px_rgba(23,58,48,.42)]">
       <button
         type="button"
         onClick={() => onSelect(programme)}
         aria-label={`View ${programme.title} course details`}
-        className="block w-full text-left focus:outline-none focus-visible:ring-4 focus-visible:ring-inset focus-visible:ring-[#78A942]/40"
+        className="block cursor-pointer w-full text-left focus:outline-none focus-visible:ring-4 focus-visible:ring-inset focus-visible:ring-[#78A942]/40"
       >
         <CourseImage
           src={programme.thumbnail}
